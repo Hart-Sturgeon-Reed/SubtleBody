@@ -1,0 +1,16 @@
+{
+  "name": "SubtleBody",
+  "version": "0.0.1",
+  "description": "A node web app to represent the body as an abstract mandala using skeletal tracking",
+  "main": "phyxi.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Hart Reed",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.11.2",
+    "osc-min": "^0.2.0",
+    "socket.io": "^1.3.4"
+  }
+}

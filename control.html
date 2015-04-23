@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+
+<html ng-app='ControlApp'>
+<head>
+    <title>Phyxi Control Panel</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="mobile-web-app-capable" content="yes"> 
+    
+    <script src="/lib/jquery.js"></script>
+    <script src="/lib/jquery.gsap.min.js"></script>
+    <script src="/lib/TweenMax.min.js"></script>
+    <script src="/lib/angular.min.js"></script>
+    
+    <script src="/socket.io/socket.io.js"></script>
+    
+    <script src="/control.js"></script>
+    <script src="/util.js"></script>
+    
+    <link rel="stylesheet" type="text/css" href="/css/customFonts.css">
+    <link rel="stylesheet" type="text/css" href="/css/control.css">
+</head>
+
+<body ng-controller='Controller'>
+    <div class='tex'></div>
+    <div class="menu lv2">
+        PhyxiJS v0.1
+    </div>
+    <div class='button leftButton lv3'>L</div>
+    <div class='button rightButton lv3'>R</div>
+    <div class='scroller'>
+        <div class="pane">
+            <div ng-repeat='item in leftControls' class='control lv1' id='{{item.label}}'>{{item.text}}</div>
+        </div>
+        <div class="pane">
+            <div ng-repeat='item in midControls' class='control lv1' id='{{item.label}}'>{{item.text}}</div>
+        </div>
+        <div class="pane">
+            <div ng-repeat='item in rightControls' class='control lv1' id='{{item.label}}'>{{item.text}}</div>
+        </div>
+    </div>
+</body>
+<script>
+    $(document).ready(function(){
+        init();
+    });
+</script>
+</html>

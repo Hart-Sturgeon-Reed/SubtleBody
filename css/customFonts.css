@@ -1,0 +1,51 @@
+/*Main title font -- use sparingly*/
+@font-face {
+    font-family: Cinzel;
+    src: url("../assets/fonts/Cinzel-Regular.otf") format("opentype");
+}
+/*Pixel fonts*/
+@font-face {
+    font-family: Tempesta;
+    src: url("../assets/fonts/Tempesta_five.ttf") format("truetype");
+}
+@font-face {
+    font-family: Console;
+    src: url("../assets/fonts/Console.ttf") format("truetype");
+}
+/*Body & header fonts -- generally use thinner weights except for effect*/
+@font-face {
+    font-family: Brandon;
+    src: url("../assets/fonts/Brandon_reg.otf") format("opentype");
+}
+@font-face {
+    font-family: Brandon Light;
+    src: url("../assets/fonts/Brandon_light.otf") format("opentype");
+}
+@font-face {
+    font-family: Brandon Thin;
+    src: url("../assets/fonts/Brandon_thin.otf") format("opentype");
+}
+@font-face {
+    font-family: Brandon Italic;
+    src: url("../assets/fonts/Brandon_med_it.otf") format("opentype");
+}
+@font-face {
+    font-family: Brandon Bold;
+    src: url("../assets/fonts/Brandon_bld.otf") format("opentype");
+}
+@font-face {
+    font-family: Brandon Heavy;
+    src: url("../assets/fonts/Brandon_blk.otf") format("opentype");
+}
+@font-face {
+    font-family: Console;
+    src: url("../assets/fonts/Console.ttf") format("truetype");
+}
+@font-face {
+    font-family: Bitwise;
+    src: url("../assets/fonts/Bitwise.ttf") format("truetype");
+}
+@font-face {
+    font-family: Wabroye;
+    src: url("../assets/fonts/Wabroye.otf") format("opentype");
+}

@@ -61,7 +61,7 @@ function TestStage(){
     blurFilter = new PIXI.BlurFilter();
     blurFilter.blurX = 2;
     blurFilter.blurY = 2;
-//    stage.filters = [blurFilter];
+    //stage.filters = [blurFilter];
     
     center = Physics.vector(stageWidth/2,stageHeight/2);
     

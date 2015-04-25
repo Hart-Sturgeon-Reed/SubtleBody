@@ -21,6 +21,14 @@ function setCollider(collide){
     }
 }
 
+function setEdge(collide){
+    if(collide){
+        world.add(edgeCollider);
+    }else{
+        world.remove(edgeCollider);
+    }
+}
+
 function showParallax(visible){
     stage.parallax.visible = visible;
     stage.background.visible = visible;
@@ -37,6 +45,46 @@ function Defaults(){
     showLayer('ents',true);
     showLayer('drawing',false);
 }
+
+function Soma(){
+    Defaults();
+    console.log('Cell mode');
+    world.warp(0.16);
+    world.changeGrav(GRV.zero);
+    world.changeOrbit(Physics.behavior('newtonian', {
+        strength: 0.09,
+        max: 180,
+        min: 20
+    }));
+    
+    setBackground('black');
+    setEntityColors([colors.red,colors.orange,colors.ltOrange,colors.white]);
+    setEntitySprite('/assets/sprites/bubbleLt.png',1);
+    setEntitySpriteScale(1.9);
+    setEntityBlendMode(PIXI.blendModes.SCREEN);
+    useWind = false;
+    
+    runSim = true;
+    setCollider(true);
+    setEdge(false);
+    showParallax(false);
+    
+    model.primary = function(){return Physics.behavior('attractor', {
+        order: 1.2,
+        strength: 0.008,
+        max: 300,
+        min: 20
+    });}
+
+    model.secondary = function(){return Physics.behavior('attractor', {
+        order: 1.2,
+        strength: -0.008,
+        max: 80,
+        min: 10
+    });}
+}
+
+
 
 function Dance(){
     Defaults();
@@ -156,7 +204,7 @@ function Radial(){
     
     setBackground('angles');
     showParallax(false);
-    showLayer('ents',false);
+    showLayer('ents',true);
     
     model.secondary = function(){return Physics.behavior('attractor', {
         order: 1.2,

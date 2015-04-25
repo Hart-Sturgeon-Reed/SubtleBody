@@ -43,11 +43,16 @@ function applyForceToEntities(force){
 }
 
 function addEntities(){
-    for (var i=0;i<numPlanets;i++){
-        new Planet();
+    new Cell(1,center.x,center.y,colors.white);
+    
+    for (var i=0;i<cellCount;i++){
+        new Cell(i+2);
     }
     
-    console.log(numPlanets+' entities added');
+    collider.applyTo(cells);
+//    collidable.applyTo(cells);
+    
+    console.log(cells.length+' entities added');
 }
 
 function Planet(){
@@ -117,6 +122,4 @@ function Planet(){
     world.add(this.body);
     stage.ents.addChild(this.sprite);
     entities.push(this);
-    
-    //return this;
 }

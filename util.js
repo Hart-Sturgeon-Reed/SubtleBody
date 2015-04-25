@@ -43,7 +43,7 @@ function arrayContains(array, element) {
 }
 
 function range(min, max){
-    return min + Math.random()*max-min;
+    return min + Math.random()*(max-min);
 }
 function equalDist(range){
     return (Math.random()*range)-(Math.random()*(range/2));

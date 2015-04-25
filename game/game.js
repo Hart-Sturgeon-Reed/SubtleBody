@@ -15,7 +15,7 @@ function setupGame(){
     stage = new TestStage();
     
     // set up interaction models
-    modes = [Radial];
+    modes = [Soma];
     mode = 0;
     model = {
         primary: function(){return Physics.behavior('attractor', {
@@ -34,9 +34,9 @@ function setupGame(){
     };
 
     // set up default particle system
-    particleBrush = Minimal;
+    particleBrush = Sparks;
     userBrushes = [Dancer1,Dancer2];//,User2,User3,User4];
-    defaultCursor = addUser(0,true,Pointer,Minimal);
+    defaultCursor = addUser(0,true,Pointer,Sparks);
     
     setupParticles();
     
@@ -49,12 +49,13 @@ function setupGame(){
     // add physics entities
     addEntities();
     
-    //modes[mode]();
+//    modes[mode]();
     
     // render on each step
     world.on('step', function(){
         //updateCursor();
         updateParticles();
+        updateCells();
         if(drawMode){
             drawFrame();
         }

@@ -25,7 +25,7 @@ function addParticle(pool,position){
 
 function updateParticles(){
     frame++;
-    if(frame%2==0){
+    if(frame%1==0){
         for (var cursor of cursors){
             if(cursor.enabled){
                 if(drawRadial){
@@ -43,7 +43,7 @@ function updateParticles(){
             }
         }
     }
-    if(frame%6==0){
+    if(frame%1==0){
         for (var p of particles){
             p.update();
             if(p.dead){
@@ -108,7 +108,7 @@ function BasicCircles() {
 
 function Dancer() {
     this.gravity = 0;
-    this.particleFlow = 1;
+    this.particleFlow = 10;
     this.particleSpeed = 0.0;
     this.particleSpread = 0;
     this.particleLifespan = 15;

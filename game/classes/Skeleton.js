@@ -67,6 +67,12 @@ function Skeleton(userId){
         };
         self.rKnee.update(chunk);
     };
+    this.sendState = function(){
+        var lx = self.lHand.x/stageWidth;
+        var ly = self.lHand.y/stageHeight;
+        var rx = self.rHand.x/stageWidth;
+        var ry = self.rHand.y/stageHeight;
+    }
 }
 
 function TrackingPoint(){

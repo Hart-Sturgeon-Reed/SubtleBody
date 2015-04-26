@@ -23,8 +23,14 @@ function TestStage(){
     stage.ui = ui;
     stage.foreground = foreground;
     
-    stageWidth = renderer.width;//*2;
-    stageHeight = renderer.height;//*2;
+    if(widescreen){
+        stageWidth = renderer.width*2;
+        stageHeight = renderer.height*2;
+    }else{
+        stageWidth = renderer.width;
+        stageHeight = renderer.height;
+    }
+    
     
     //Parallax
     if(useParallax){

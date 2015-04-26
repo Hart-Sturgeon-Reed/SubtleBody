@@ -63,6 +63,7 @@ function Soma(){
     setEntitySpriteScale(1.9);
     setEntityBlendMode(PIXI.blendModes.SCREEN);
     useWind = false;
+    drawRadial = true;
     
     runSim = true;
     setCollider(true);

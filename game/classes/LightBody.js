@@ -1,8 +1,18 @@
 function LightBody(skeleton){
     var self = this;
     this.skeleton = skeleton;
+    console.log('LightBody created');
     this.update = function(data){
-        self.skeleton.update(data);
+        if(self.skeleton) {
+            self.skeleton.update(data);
+            if(useWind){
+                var delta = self.skeleton.torso.getDelta(1);
+                var force = {x:delta.x*0.001,y:delta.y*-0.001};
+
+                console.log(delta);
+                applyFlow(force);
+            }
+        }
     }
     
 }

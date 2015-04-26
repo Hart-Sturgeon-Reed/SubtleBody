@@ -62,7 +62,7 @@ function Soma(){
     setEntitySprite('/assets/sprites/bubbleLt.png',1);
     setEntitySpriteScale(1.9);
     setEntityBlendMode(PIXI.blendModes.SCREEN);
-    useWind = false;
+    useWind = true;
     drawRadial = true;
     
     runSim = true;

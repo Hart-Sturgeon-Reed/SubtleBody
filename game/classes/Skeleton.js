@@ -78,13 +78,22 @@ function TrackingPoint(){
     this.py = null;
     this.old = [];
     this.update = function(data){
-        self.old.shift({x:self.x,y:self.y,z:self.z,px:self.px,py:self.py});
+        self.old.unshift({x:self.x,y:self.y,z:self.z,px:self.px,py:self.py});
         this.x = data.x;
         this.y = data.y;
         this.z = data.z;
         this.px = data.px;
         this.py = data.py;
-        self.old = self.old.slice(0,10);
+        //self.old = self.old.slice(0,10);
+    }
+    this.getDelta = function(framesAgo){
+        if(framesAgo==null){framesAgo=0};
+        if(self.old[framesAgo]!=null){
+            var deltaX = self.x - self.old[framesAgo].x;
+            var deltaY = self.y - self.old[framesAgo].y;
+            return {x:deltaX,y:deltaY};
+        }
+        return {x:0,y:0};
     }
 }
 

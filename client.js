@@ -13,28 +13,31 @@ function init(){
     });
     
     socket.on('primary click', function(socketNum){
-        (getCursor(socketNum)).toggleToPrimary();
+        //(getCursor(socketNum)).toggleToPrimary();
     });
     socket.on('secondary click', function(socketNum){
-        (getCursor(socketNum)).toggleToSecondary();
+        //(getCursor(socketNum)).toggleToSecondary();
     });
     socket.on('switch mode', function(){
         switchMode();
     });
     socket.on('recolor', function(){
-        recolorEntities();
+        
     });
     socket.on('pause', function(){
         togglePause();
     });
     socket.on('disable effect', function(socketNum){
-        (getCursor(socketNum)).disableEffect(false);
+        //(getCursor(socketNum)).disableEffect(false);
     });
     socket.on('add controller', function(socketNum){
         //addUser(socketNum,false,Smooth);
         addCellDriver(socketNum);
     });
-    socket.on('controller disconnected', removeUser);
+    socket.on('controller disconnected', function(socketNum){
+        var driver = getDriver(socketNum);
+        if(driver!=null) driver.brain.ai = true; driver.ai = true;
+    });
     
     socket.on('accel', function(accel, socketNum){
         //console.log('controller at socket '+socketNum+':');

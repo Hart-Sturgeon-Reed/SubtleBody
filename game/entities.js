@@ -41,6 +41,11 @@ function applyForceToEntities(force){
         entity.body.applyForce(force);
     }
 }
+function applyFlow(force){
+    for (var mote of moteBodies){
+        mote.applyForce(force);
+    }
+}
 
 function addEntities(){
     for (var i=0;i<cellCount;i++){

@@ -52,13 +52,16 @@ function addEntities(){
         new Mote(i+2);
     }
     
-    collider.applyTo(cellBodies);
-    collidable.applyTo(cellBodies);
-    orbitalGrav.applyTo(cellBodies);
-    //orbitalGrav.applyTo(moteBodies);
+    setPhysics();
     
     console.log(cells.length+' entities added');
 }
+
+function setPhysics(){
+        collider.applyTo(cellBodies);
+        collidable.applyTo(cellBodies.concat(moteBodies));
+        orbitalGrav.applyTo(cellBodies.concat(moteBodies));
+    }
 
 function Planet(){
     var self = this;

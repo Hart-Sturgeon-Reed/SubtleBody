@@ -46,7 +46,7 @@ function range(min, max){
     return min + Math.random()*(max-min);
 }
 function equalDist(range){
-    return (Math.random()*range)-(Math.random()*(range/2));
+    return (Math.random()*range)-(range/2);
 }
 
 function animTo(target,tween,time)

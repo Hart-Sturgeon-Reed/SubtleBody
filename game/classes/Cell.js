@@ -6,7 +6,8 @@ function updateCells(){
 
 function Cell(userId,xPos,yPos,tint,scale){
     var self = this;
-    var age = 1;
+    if(scale==null) scale = range(cellMin,cellMax);
+    this.energy = scale;
     var hunger = 100;
     var satiety = 0;
     var breath = Math.random();
@@ -15,8 +16,8 @@ function Cell(userId,xPos,yPos,tint,scale){
         [5,3]
     ];
     var innerSym = 3;
-    var outerSym = 7;
-    var moonSym = 5;
+    var outerSym = 3;
+    var moonSym = 4;
     var innerOffset = 0.4;
     var outerOffset = 0.6;
     var moonOffset = 2.0;
@@ -27,23 +28,27 @@ function Cell(userId,xPos,yPos,tint,scale){
     var moonScale = 4.2;
     var hasMoons = true;
     
+    var levels = 9;
     
-    if(scale==null) scale = range(cellMin,cellMax);
     var opacity = scale/cellMax;
     if (tint==null) var tint = getRandomProperty(entityColors,restrictedColors);
     if (xPos==null) var xPos = Math.random()*stageWidth;
     if (yPos==null) var yPos = Math.random()*stageHeight;
     
-    this.jumpSpeed = 0.06;
+    this.moveSpeed = 0.04;
+    this.jumpSpeed = 0.16;
     this.brain = new Brain(this);
     this.body = Physics.body('circle', {
         x: xPos, // x-coordinate
         y: yPos, // y-coordinate
-        radius: scale * 3.8,
-        restitution: 0.3,
+        radius: scale * 3.2,
+        restitution: 0.5,
         mass: scale/3,
-        angle: Math.random()
+        angle: Math.random(),
+        label: 'cell'
     });
+    
+    this.body.self = self;
     
     this.body.view = new PIXI.DisplayObjectContainer();
     
@@ -81,20 +86,59 @@ function Cell(userId,xPos,yPos,tint,scale){
     };
     this.sprite.addChild(this.soma);
     
-    this.generateOrganelles = function(innerSym,innerOffset,innerScale,outerSym,outerOffset,outerScale,somaOffset,somaScale) {
+    this.grow = function(amount){
+        var prevEnergy = self.energy;
+        self.energy += amount;
+        if(self.energy > 20){
+            self.energy = 20;
+        }
+        self.setScale(self.energy/prevEnergy);
+        outerSym = Math.ceil((self.energy/25)*levels)+1;
+        self.generateOrganelles();
+    }
+    this.damage = function(amount){
+        var prevEnergy = self.energy;
+        self.energy -= amount;
+        self.setScale(self.energy/prevEnergy);
+        outerSym = Math.ceil((self.energy/25)*levels)+1;
+        self.generateOrganelles();
+        if(self.energy<3){
+            stage.ents.removeChild(self.sprite);
+            world.remove(self.body);
+            if(hasMoons){
+                for (var moon of self.moons){
+                    stage.ents.removeChild(moon.view);
+                    world.remove(moon);
+                }
+            }
+        }
+    }
+    
+    this.generateOrganelles = function() {
         if(this.organelles != null){
             for (var old of this.organelles){
                 self.sprite.removeChild(old);
             }
         }
+        if(this.outerOrganelles != null){
+            for (var old of this.outerOrganelles){
+                self.sprite.removeChild(old);
+            }
+        }
+        if(this.outerSoma != null){
+            for (var old of this.outerSoma){
+                self.sprite.removeChild(old);
+            }
+        }
         this.organelles = [];
         this.outerOrganelles = [];
+        this.outerSoma = [];
         // Inner organelles
-        var points = getRadialSym(innerSym, {x:0,y:-innerOffset}, {x:0,y:0});
+        var points = getRadialSym(innerSym, {x:0,y:-innerOffset*scale}, {x:0,y:0});
         for (var p of points){
             var og = new PIXI.Sprite(cellSprite);
-            og.width = innerScale;
-            og.height = innerScale;
+            og.width = innerScale*scale;
+            og.height = innerScale*scale;
             og.alpha = 0.8;
             og.tint = tint;
             og.blendMode = PIXI.blendModes.SCREEN;
@@ -108,11 +152,11 @@ function Cell(userId,xPos,yPos,tint,scale){
             this.sprite.addChild(og);
         }
         // Outer organelles
-        points = getRadialSym(outerSym, {x:0,y:-outerOffset}, {x:0,y:0});
+        points = getRadialSym(outerSym, {x:0,y:-outerOffset*scale}, {x:0,y:0});
         for (var p of points){
             var og = new PIXI.Sprite(cellSprite);
-            og.width = outerScale;
-            og.height = outerScale;
+            og.width = outerScale*scale;
+            og.height = outerScale*scale;
             og.alpha = 0.4;
             og.tint = tint;//colors.white;
             og.blendMode = PIXI.blendModes.SCREEN;
@@ -126,8 +170,8 @@ function Cell(userId,xPos,yPos,tint,scale){
             this.sprite.addChild(og);
 
             var so = new PIXI.Sprite(sprites.bubLt);
-            so.width = somaScale;
-            so.height = somaScale;
+            so.width = somaScale*scale;
+            so.height = somaScale*scale;
             so.alpha = 0.8;
             so.tint = tint;//colors.white;
             so.blendMode = PIXI.blendModes.SCREEN;
@@ -137,11 +181,12 @@ function Cell(userId,xPos,yPos,tint,scale){
             };
             so.position.x = p.x;
             so.position.y = p.y;
+            this.outerSoma.push(so);
             this.sprite.addChild(so);
         }
     }
     
-    this.generateOrganelles(innerSym,scale*innerOffset,scale*innerScale,outerSym,scale*outerOffset,scale * 3.4,scale*somaOffset,scale*somaScale);
+    this.generateOrganelles();
     
     this.breathe = function(){
         breath += breathingSpeed;
@@ -211,7 +256,7 @@ function Cell(userId,xPos,yPos,tint,scale){
     this.resetMoons = function(){
         if(!hasMoons) return;
         var i = 0;
-        points = getRadialSym(moonSym, {x:this.body.state.pos.x,y:this.body.state.pos.y-(scale*3.5)}, this.body.state.pos);
+        points = getRadialSym(moonSym, {x:this.body.state.pos.x,y:this.body.state.pos.y-(scale*moonOffset)}, this.body.state.pos);
         for (var p of points){
             self.moons[i].state.pos.x = p.x;
             self.moons[i].state.pos.y = p.y;
@@ -228,7 +273,7 @@ function Cell(userId,xPos,yPos,tint,scale){
     this.update = function(){
         //Screen wrap
         var offset = scale*3.4;
-        var dampening = 0.9;
+        var dampening = 0.999;
         if (self.body.state.pos.y > stageHeight + offset && self.body.state.vel.y > 0) {
             self.body.state.pos.y = -offset;
             self.body.state.old.pos.y = -offset;
@@ -291,19 +336,22 @@ function Cell(userId,xPos,yPos,tint,scale){
         
         self.breathe();
         
+        if(Math.random()>0.9999){
+            self.resetMoons();
+        }
+        
         
     }
-    this.setScale = function(newScale, scaleY){
-        if(scaleY==null){
-            self.sprite.width = self.spriteScale * newScale;
-            self.sprite.height = self.spriteScale * newScale;
-        }else{
-            self.sprite.width = self.spriteScale * newScale;
-            self.sprite.height = self.spriteScale * scaleY;
+    this.setScale = function(newScale){
+        self.sprite.width *= newScale;
+        self.sprite.height *= newScale;
+        self.body.geometry.radius *= newScale;
+        self.body.mass *= newScale;
+        self.body.recalc();
+        for (var moon of self.moons){
+            moon.view.width *= newScale;
+            moon.view.height *= newScale;
         }
-//        self.body.geometry.radius = self.sprite.width;
-//        self.body.geometry.height = self.sprite.height;
-//        self.body.recalc();
     }
     
     world.add(this.body);

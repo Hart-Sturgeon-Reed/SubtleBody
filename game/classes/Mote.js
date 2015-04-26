@@ -2,6 +2,19 @@ function updateMotes(){
     for (var mote of motes){
         mote.update();
     }
+    if (deadMotes.length>10 && Math.random()>0.9){
+        new Mote();
+        setPhysics();
+//        var zombie = deadMotes.unshift();
+//        zombie.body.state.pos.x = Math.random()*stageWidth;
+//        zombie.body.old.pos.x = zombie.body.state.pos.x;
+//        zombie.body.state.pos.y = Math.random()*stageHeight;
+//        zombie.body.old.pos.y = zombie.body.state.pos.y;
+//        stage.motes.addChild(zombie.sprite);
+//        world.add(zombie.body);
+//        motes.push(zombie);
+//        moteBodies.push(zombie.body);
+    }
 }
 
 function Mote(xPos,yPos,tint,vel){
@@ -12,7 +25,9 @@ function Mote(xPos,yPos,tint,vel){
     var xPos = Math.random()*stageWidth;
     var yPos = Math.random()*stageHeight;
     
-    this.jumpSpeed = 0.02;
+    this.moveSpeed = 0.02;
+    this.jumpSpeed = 0.03;
+    this.energy = scale;
     this.brain = new Brain(this);
     this.body = Physics.body('circle', {
         x: xPos, // x-coordinate
@@ -20,8 +35,11 @@ function Mote(xPos,yPos,tint,vel){
         radius: scale * 1.8,
         restitution: 0.3,
         mass: scale/5,
-        angle: Math.random()
+        angle: Math.random(),
+        label: 'mote'
     });
+    
+    this.body.self = self;
     
     this.body.view = new PIXI.DisplayObjectContainer();
     this.body.state.angular.vel = equalDist(0.06);

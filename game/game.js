@@ -49,6 +49,8 @@ function setupGame(){
     // add physics entities
     addEntities();
     
+    setupCollisions();
+    
 //    modes[mode]();
     
     // render on each step
@@ -82,4 +84,39 @@ function setupGame(){
         }
     });
     Physics.util.ticker.start();
+}
+
+function setupCollisions(){
+    foodQuery = Physics.query({
+        $or: [
+            { bodyA: { label: 'mote' }, bodyB: { label: 'cell' } }
+            ,{ bodyB: { label: 'mote' }, bodyA: { label: 'cell' } }
+        ]
+    });
+    bounceQuery = Physics.query({
+        $or: [
+            { bodyA: { label: 'cell' }, bodyB: { label: 'cell' } }
+            ,{ bodyB: { label: 'cell' }, bodyA: { label: 'cell' } }
+        ]
+    });
+    world.on('collisions:detected', function( data, e ){
+        var found = Physics.util.find( data.collisions, foodQuery );
+        if ( found ){
+            //console.log(found);
+            if(found.bodyA.label=='cell'){
+                consume(found.bodyA,found.bodyB);
+            }else{
+                consume(found.bodyB,found.bodyA);
+            }
+        }
+        found = Physics.util.find( data.collisions, bounceQuery );
+        if ( found ){
+            //console.log(found);
+            if(found.bodyA.self.energy>found.bodyB.self.energy){
+                bounce(found.bodyA,found.bodyB);
+            }else{
+                bounce(found.bodyB,found.bodyA);
+            }
+        }
+    });
 }

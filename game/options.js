@@ -81,15 +81,10 @@ function initOptions(){
     moteCount = 180;
     moteColors = [colors.purple];
     
-<<<<<<< Updated upstream
     cellMin = 8;
     cellMax = 9;
     cellCount = 60;
-=======
-    cellMin = 7;
-    cellMax = 8;
-    cellCount = 24;
->>>>>>> Stashed changes
+
     cellSprite = PIXI.Texture.fromImage('/assets/sprites/bubbleLt.png');
     cells = [];
     cellBodies = [];

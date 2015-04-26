@@ -76,12 +76,12 @@ function initOptions(){
     moteBodies = [];
     moteMin = 2;
     moteMax = 8;
-    moteCount = 0;
+    moteCount = 80;
     moteColors = [colors.purple];
     
     cellMin = 8;
     cellMax = 18;
-    cellCount = 60;
+    cellCount = 24;
     cellSprite = PIXI.Texture.fromImage('/assets/sprites/bubbleLt.png');
     cells = [];
     cellBodies = [];

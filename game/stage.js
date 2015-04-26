@@ -1,5 +1,6 @@
 function TestStage(){
     var stage = new PIXI.DisplayObjectContainer();
+    var motes = new PIXI.DisplayObjectContainer();
     var ents = new PIXI.DisplayObjectContainer();
     var ui = new PIXI.DisplayObjectContainer();
     var parallax = new PIXI.DisplayObjectContainer();
@@ -10,12 +11,14 @@ function TestStage(){
     stage.addChild(parallax);
     stage.addChild(background);
     stage.addChild(drawing);
+    stage.addChild(motes);
     stage.addChild(ents);
     stage.addChild(ui);
     stage.addChild(foreground);
     stage.parallax = parallax;
     stage.drawing = drawing;
     stage.background = background;
+    stage.motes = motes;
     stage.ents = ents;
     stage.ui = ui;
     stage.foreground = foreground;

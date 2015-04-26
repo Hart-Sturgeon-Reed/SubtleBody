@@ -108,18 +108,18 @@ function BasicCircles() {
 
 function Dancer() {
     this.gravity = 0;
-    this.particleFlow = 10;
-    this.particleSpeed = 0.0;
+    this.particleFlow = 6;
+    this.particleSpeed = 0.8;
     this.particleSpread = 0;
     this.particleLifespan = 15;
-    this.particleOpacity = 0.18;
+    this.particleOpacity = 0.28;
     this.particleTint = colors.orange;
     this.primary = colors.orange;
     this.secondary = colors.deepBlue;
     this.particleSprite = particleSprites.circle;
     this.particleSize = {
-        min: 210,
-        max: 220
+        min: 8,
+        max: 18
     }
 }
 

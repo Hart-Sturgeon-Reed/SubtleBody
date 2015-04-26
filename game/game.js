@@ -56,6 +56,7 @@ function setupGame(){
         //updateCursor();
         updateParticles();
         updateCells();
+        updateMotes();
         if(drawMode){
             drawFrame();
         }

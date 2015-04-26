@@ -71,6 +71,20 @@ function initOptions(){
         max: 28,
         min: 6
     }
+    
+    motes = [];
+    moteBodies = [];
+    moteMin = 2;
+    moteMax = 8;
+    moteCount = 0;
+    moteColors = [colors.purple];
+    
+    cellMin = 8;
+    cellMax = 18;
+    cellCount = 60;
+    cellSprite = PIXI.Texture.fromImage('/assets/sprites/bubbleLt.png');
+    cells = [];
+    cellBodies = [];
 
     gravityStrength = GRV.zero;
 

@@ -36,7 +36,7 @@ function BasicWorld() {
     world.add(collider);
     
     constraints = Physics.behavior('verlet-constraints', {
-        iterations: 2
+        iterations: 3
     });
     world.add(constraints);
     

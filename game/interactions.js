@@ -71,7 +71,7 @@ function Soma(){
     
     model.primary = function(){return Physics.behavior('attractor', {
         order: 1.2,
-        strength: 0.008,
+        strength: 0.8,
         max: 300,
         min: 20
     });}

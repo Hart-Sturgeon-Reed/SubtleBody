@@ -48,9 +48,14 @@ function addEntities(){
     for (var i=0;i<cellCount;i++){
         new Cell(i+2);
     }
+    for (var i=0;i<moteCount;i++){
+        new Mote(i+2);
+    }
     
-    collider.applyTo(cells);
-//    collidable.applyTo(cells);
+    collider.applyTo(cellBodies);
+    collidable.applyTo(cellBodies);
+    orbitalGrav.applyTo(cellBodies);
+    //orbitalGrav.applyTo(moteBodies);
     
     console.log(cells.length+' entities added');
 }

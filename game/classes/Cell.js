@@ -10,6 +10,7 @@ function Cell(userId,xPos,yPos,tint,scale){
     if(userId!=null) this.id = userId; this.ai = false;
     if(scale==null) scale = range(cellMin,cellMax);
     this.energy = scale;
+    var maxEnergy = 30;
     var hunger = 100;
     var satiety = 0;
     var breath = Math.random()*100;
@@ -28,6 +29,7 @@ function Cell(userId,xPos,yPos,tint,scale){
     var somaOffset = 0.6;
     var somaScale = 1.6;
     var moonScale = 4.2;
+    var moonAlpha = 0.35;
     var hasMoons = true;
     
     var levels = 9;
@@ -91,18 +93,18 @@ function Cell(userId,xPos,yPos,tint,scale){
     this.grow = function(amount){
         var prevEnergy = self.energy;
         self.energy += amount;
-        if(self.energy > 20){
-            self.energy = 20;
+        if(self.energy > maxEnergy){
+            self.energy = maxEnergy;
         }
         self.setScale(self.energy/prevEnergy);
-        outerSym = Math.ceil((self.energy/30)*levels)+1;
+        outerSym = Math.ceil((self.energy/(maxEnergy*1.5))*levels)+1;
         self.generateOrganelles();
     }
     this.damage = function(amount){
         var prevEnergy = self.energy;
         self.energy -= amount;
         self.setScale(self.energy/prevEnergy);
-        outerSym = Math.ceil((self.energy/30)*levels)+1;
+        outerSym = Math.ceil((self.energy/(maxEnergy*1.5))*levels)+1;
         self.generateOrganelles();
         if(self.energy<3){
             stage.ents.removeChild(self.sprite);
@@ -230,7 +232,7 @@ function Cell(userId,xPos,yPos,tint,scale){
             var so = bd.view;
             so.width = scale * moonScale;
             so.height = scale * moonScale;
-            so.alpha = 0.22;
+            so.alpha = moonAlpha;
             so.tint = tint;//colors.white;
             so.blendMode = PIXI.blendModes.SCREEN;
             so.anchor = {

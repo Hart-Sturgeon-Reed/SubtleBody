@@ -37,6 +37,7 @@ function setupGame(){
     particleBrush = Sparks;
     userBrushes = [Dancer1,Dancer2];//,User2,User3,User4];
     defaultCursor = addUser(0,true,Pointer,Sparks);
+    defaultCursor.enabled = false;
     
     setupParticles();
     

@@ -1,7 +1,8 @@
 particleSprites = {
     circle: PIXI.Texture.fromImage('assets/particles/circle.png'),
     drop: PIXI.Texture.fromImage('assets/particles/drop.png'),
-    fire: PIXI.Texture.fromImage('assets/particles/fire.png')
+    fire: PIXI.Texture.fromImage('assets/particles/fire.png'),
+    wisp: PIXI.Texture.fromImage('assets/sprites/wispLt.png')
 }
 
 function setupParticles(){
@@ -108,18 +109,18 @@ function BasicCircles() {
 
 function Dancer() {
     this.gravity = 0;
-    this.particleFlow = 1;
+    this.particleFlow = 2;
     this.particleSpeed = 0.8;
-    this.particleSpread = 0;
-    this.particleLifespan = 15;
-    this.particleOpacity = 0.18;
+    this.particleSpread = 6;
+    this.particleLifespan = 45;
+    this.particleOpacity = 0.12;
     this.particleTint = colors.orange;
     this.primary = colors.orange;
     this.secondary = colors.deepBlue;
-    this.particleSprite = particleSprites.circle;
+    this.particleSprite = particleSprites.wisp;
     this.particleSize = {
         min: 210,
-        max: 220
+        max: 820
     }
 }
 
@@ -134,7 +135,7 @@ function Dancer1() {
 }
 function Dancer2() {
     Dancer.call(this);
-    this.primary = colors.green
+    this.primary = colors.white
     this.secondary = colors.purple
     this.paint = colors.indigo;
 

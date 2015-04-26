@@ -49,7 +49,7 @@ function Defaults(){
 function Soma(){
     Defaults();
     console.log('Cell mode');
-    world.warp(0.16);
+    world.warp(0.26);
     world.changeGrav(GRV.zero);
     world.changeOrbit(Physics.behavior('newtonian', {
         strength: 0.09,

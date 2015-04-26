@@ -56,6 +56,7 @@ function initOptions(){
     drawMode = false; // Draws pixi sprites
     kinectMap = false; // Map or project input onto screen
     useParallax = false; // Set up parallax scrolling background
+    widescreen = true;
     runSim = true; // Run physics sim on entities
     lightBodyCreated = false; // Has a user been spawned yet?
     lightBodyVisible = false; // Is the user visible?
@@ -77,12 +78,12 @@ function initOptions(){
     moteBodies = [];
     moteMin = 2;
     moteMax = 8;
-    moteCount = 80;
+    moteCount = 180;
     moteColors = [colors.purple];
     
     cellMin = 8;
     cellMax = 9;
-    cellCount = 24;
+    cellCount = 60;
     cellSprite = PIXI.Texture.fromImage('/assets/sprites/bubbleLt.png');
     cells = [];
     cellBodies = [];

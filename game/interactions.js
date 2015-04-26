@@ -66,7 +66,7 @@ function Soma(){
     
     runSim = true;
     setCollider(true);
-    setEdge(true);
+    setEdge(false);
     showParallax(false);
     
     model.primary = function(){return Physics.behavior('attractor', {

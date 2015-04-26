@@ -31,17 +31,20 @@ function init(){
         (getCursor(socketNum)).disableEffect(false);
     });
     socket.on('add controller', function(socketNum){
-        addUser(socketNum,false,Smooth);
+        //addUser(socketNum,false,Smooth);
+        addCellDriver(socketNum);
     });
     socket.on('controller disconnected', removeUser);
     
     socket.on('accel', function(accel, socketNum){
         //console.log('controller at socket '+socketNum+':');
         //console.dir(accel);
-        var cursor = getCursor(socketNum);
-        if(cursor!=null){
-            cursor.filterMotion.call(cursor,accel);
-        }
+//        var cursor = getCursor(socketNum);
+//        if(cursor!=null){
+//            cursor.filterMotion.call(cursor,accel);
+//        }
+        var driver = getDriver(socketNum);
+        if(driver!=null) driver.brain.move(accel);
     });
     
     setupOSC();
@@ -103,15 +106,17 @@ function addUser(socketNum, isDefault, filter, brush){
 }
 
 function removeUser(socketNum){
-    var cursor = getCursor(socketNum);
-    if(cursor!=null){
-        var dead = cursors.splice(cursors.indexOf(cursor),1)[0];
-        dead.disableEffect(true);
-        dead = null;
-        console.log('removing controller '+socketNum);
-    }else{
-        console.log('removing old controller: number '+socketNum);
-    }
+    var driver = getDriver(socketNum);
+    if(driver!=null) driver.brain.ai = true; driver.ai = true;
+//    var cursor = getCursor(socketNum);
+//    if(cursor!=null){
+//        var dead = cursors.splice(cursors.indexOf(cursor),1)[0];
+//        dead.disableEffect(true);
+//        dead = null;
+//        console.log('removing controller '+socketNum);
+//    }else{
+//        console.log('removing old controller: number '+socketNum);
+//    }
 }
 
 function getCursor(socketNum){

@@ -43,8 +43,6 @@ function applyForceToEntities(force){
 }
 
 function addEntities(){
-    new Cell(1,center.x,center.y,colors.white);
-    
     for (var i=0;i<cellCount;i++){
         new Cell(i+2);
     }

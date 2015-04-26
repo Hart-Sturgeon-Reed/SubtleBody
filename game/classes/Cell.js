@@ -6,12 +6,14 @@ function updateCells(){
 
 function Cell(userId,xPos,yPos,tint,scale){
     var self = this;
+    this.ai = true;
+    if(userId!=null) this.id = userId; this.ai = false;
     if(scale==null) scale = range(cellMin,cellMax);
     this.energy = scale;
     var hunger = 100;
     var satiety = 0;
-    var breath = Math.random();
-    var breathingSpeed = 0.02;
+    var breath = Math.random()*100;
+    var breathingSpeed = 0.012;
     var syms = [
         [5,3]
     ];
@@ -37,12 +39,12 @@ function Cell(userId,xPos,yPos,tint,scale){
     
     this.moveSpeed = 0.04;
     this.jumpSpeed = 0.16;
-    this.brain = new Brain(this);
+    this.brain = new Brain(this,this.ai);
     this.body = Physics.body('circle', {
         x: xPos, // x-coordinate
         y: yPos, // y-coordinate
-        radius: scale * 3.2,
-        restitution: 0.5,
+        radius: scale * 2.8,
+        restitution: 0.65,
         mass: scale/3,
         angle: Math.random(),
         label: 'cell'
@@ -93,14 +95,14 @@ function Cell(userId,xPos,yPos,tint,scale){
             self.energy = 20;
         }
         self.setScale(self.energy/prevEnergy);
-        outerSym = Math.ceil((self.energy/25)*levels)+1;
+        outerSym = Math.ceil((self.energy/30)*levels)+1;
         self.generateOrganelles();
     }
     this.damage = function(amount){
         var prevEnergy = self.energy;
         self.energy -= amount;
         self.setScale(self.energy/prevEnergy);
-        outerSym = Math.ceil((self.energy/25)*levels)+1;
+        outerSym = Math.ceil((self.energy/30)*levels)+1;
         self.generateOrganelles();
         if(self.energy<3){
             stage.ents.removeChild(self.sprite);
@@ -310,8 +312,8 @@ function Cell(userId,xPos,yPos,tint,scale){
         }
         
         //Velocity lock
-        self.body.state.vel.x *= 0.999;
-        self.body.state.vel.y *= 0.999;
+        self.body.state.vel.x *= 0.995;
+        self.body.state.vel.y *= 0.995;
         self.body.state.angular.vel *= 0.999;
         
 //        if(hasMoons){
@@ -326,7 +328,9 @@ function Cell(userId,xPos,yPos,tint,scale){
 //        }
         
         //Movement
-        self.brain.meander();
+        if(self.ai){
+            self.brain.meander();
+        }
         
         self.anchorPoint.state.pos = self.body.state.pos;
         if(self.anchorPoint.old) self.anchorPoint.old.pos = self.body.state.pos;

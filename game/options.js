@@ -49,14 +49,14 @@ function initOptions(){
     cursors = [];
     brushes = [];
     entities = [];
-    numPlanets = 12; // 160 is about max with decent performance
+    numPlanets = 124; // 160 is about max with decent performance
     paused = false;
     useWind = false; // Applies controller delta (scaled) as a force to all entities
     drawRadial = false; // Adds radial symmetry to particle systems
     drawMode = false; // Draws pixi sprites
     kinectMap = false; // Map or project input onto screen
     useParallax = false; // Set up parallax scrolling background
-    runSim = true; // Run physics sim on entities
+    runSim = false; // Run physics sim on entities
     lightBodyCreated = false; // Has a user been spawned yet?
     lightBodyVisible = false; // Is the user visible?
     lightBody = null; // Main user (skeleton tracking);
@@ -71,51 +71,33 @@ function initOptions(){
         max: 28,
         min: 6
     }
-    
-    motes = [];
-    deadMotes = [];
-    moteBodies = [];
-    moteMin = 2;
-    moteMax = 8;
-    moteCount = 80;
-    moteColors = [colors.purple];
-    
-    cellMin = 8;
-    cellMax = 9;
-    cellCount = 24;
-    cellSprite = PIXI.Texture.fromImage('/assets/sprites/bubbleLt.png');
-    cells = [];
-    cellBodies = [];
 
     gravityStrength = GRV.zero;
 
     prevLML = prevLMR = null;
 
     //Load textures into cache for later use
-    sprites = {
-        mt1: mountain1tex = PIXI.Texture.fromImage('/assets/backgrounds/mountain1.png'),
-        mt2: mountain2tex = PIXI.Texture.fromImage('/assets/backgrounds/mountain2.png'),
-        sky: skytex = PIXI.Texture.fromImage('/assets/backgrounds/sky.png'),
+    mountain1tex = PIXI.Texture.fromImage('/assets/backgrounds/mountain1.png');
+    mountain2tex = PIXI.Texture.fromImage('/assets/backgrounds/mountain2.png');
+    skytex = PIXI.Texture.fromImage('/assets/backgrounds/sky.png');
 
-        lf1: PIXI.Texture.fromImage('/assets/leaves/leaf_01.png'),
-        lf2: PIXI.Texture.fromImage('/assets/leaves/leaf_02.png'),
-        lf3: PIXI.Texture.fromImage('/assets/leaves/leaf_03.png'),
-        lf4: PIXI.Texture.fromImage('/assets/leaves/leaf_04.png'),
-        lf5: PIXI.Texture.fromImage('/assets/leaves/leaf_05.png'),
-        lf6: PIXI.Texture.fromImage('/assets/leaves/leaf_06.png'),
+    PIXI.Texture.fromImage('/assets/leaves/leaf_01.png');
+    PIXI.Texture.fromImage('/assets/leaves/leaf_02.png');
+    PIXI.Texture.fromImage('/assets/leaves/leaf_03.png');
+    PIXI.Texture.fromImage('/assets/leaves/leaf_04.png');
+    PIXI.Texture.fromImage('/assets/leaves/leaf_05.png');
+    PIXI.Texture.fromImage('/assets/leaves/leaf_06.png');
 
-        br1: PIXI.Texture.fromImage('/assets/watercolor/1.png'),
-        br2: PIXI.Texture.fromImage('/assets/watercolor/2.png'),
-        br3: PIXI.Texture.fromImage('/assets/watercolor/3.png'),
-        br4: PIXI.Texture.fromImage('/assets/watercolor/4.png'),
-        
-        planet: PIXI.Texture.fromImage('/assets/sprites/planet.png'),
-        spMd: PIXI.Texture.fromImage('/assets/sprites/sphereMd.png'),
-        spDk: PIXI.Texture.fromImage('/assets/sprites/sphereDk.png'),
-        wp: PIXI.Texture.fromImage('/assets/sprites/wisp.png'),
-        wpLt: PIXI.Texture.fromImage('/assets/sprites/wispLt.png'),
-        bubLt: PIXI.Texture.fromImage('/assets/sprites/bubbleLt.png'),
-        bubMd: PIXI.Texture.fromImage('/assets/sprites/bubbleMd.png'),
-        bubDk: PIXI.Texture.fromImage('/assets/sprites/bubbleDk.png')
-    };
+    PIXI.Texture.fromImage('/assets/watercolor/1.png');
+    PIXI.Texture.fromImage('/assets/watercolor/2.png');
+    PIXI.Texture.fromImage('/assets/watercolor/3.png');
+    PIXI.Texture.fromImage('/assets/watercolor/4.png');
+    PIXI.Texture.fromImage('/assets/sprites/planet.png');
+    PIXI.Texture.fromImage('/assets/sprites/sphereMd.png');
+    PIXI.Texture.fromImage('/assets/sprites/sphereDk.png');
+    PIXI.Texture.fromImage('/assets/sprites/wispLt.png');
+    PIXI.Texture.fromImage('/assets/sprites/bubbleLt.png');
+    PIXI.Texture.fromImage('/assets/sprites/bubbleMd.png');
+    PIXI.Texture.fromImage('/assets/sprites/bubbleDk.png');
+    PIXI.Texture.fromImage('/assets/sprites/wisp.png');
 }

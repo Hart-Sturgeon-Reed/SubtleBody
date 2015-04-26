@@ -1,6 +1,5 @@
 function TestStage(){
     var stage = new PIXI.DisplayObjectContainer();
-    var motes = new PIXI.DisplayObjectContainer();
     var ents = new PIXI.DisplayObjectContainer();
     var ui = new PIXI.DisplayObjectContainer();
     var parallax = new PIXI.DisplayObjectContainer();
@@ -11,14 +10,12 @@ function TestStage(){
     stage.addChild(parallax);
     stage.addChild(background);
     stage.addChild(drawing);
-    stage.addChild(motes);
     stage.addChild(ents);
     stage.addChild(ui);
     stage.addChild(foreground);
     stage.parallax = parallax;
     stage.drawing = drawing;
     stage.background = background;
-    stage.motes = motes;
     stage.ents = ents;
     stage.ui = ui;
     stage.foreground = foreground;
@@ -62,8 +59,9 @@ function TestStage(){
     pixelFilter.size.x = 2;
     pixelFilter.size.y = 2;
     blurFilter = new PIXI.BlurFilter();
-    //blurFilter.blur = 2;
-//    stage.filters = [invertFilter];
+    blurFilter.blurX = 2;
+    blurFilter.blurY = 2;
+//    stage.filters = [blurFilter];
     
     center = Physics.vector(stageWidth/2,stageHeight/2);
     

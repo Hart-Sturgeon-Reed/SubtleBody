@@ -43,25 +43,12 @@ function applyForceToEntities(force){
 }
 
 function addEntities(){
-    new Cell(1,center.x,center.y,colors.white);
-    
-    for (var i=0;i<cellCount;i++){
-        new Cell(i+2);
-    }
-    for (var i=0;i<moteCount;i++){
-        new Mote(i+2);
+    for (var i=0;i<numPlanets;i++){
+        new Planet();
     }
     
-    setPhysics();
-    
-    console.log(cells.length+' entities added');
+    console.log(numPlanets+' entities added');
 }
-
-function setPhysics(){
-        collider.applyTo(cellBodies);
-        collidable.applyTo(cellBodies.concat(moteBodies));
-        orbitalGrav.applyTo(cellBodies.concat(moteBodies));
-    }
 
 function Planet(){
     var self = this;
@@ -130,4 +117,6 @@ function Planet(){
     world.add(this.body);
     stage.ents.addChild(this.sprite);
     entities.push(this);
+    
+    //return this;
 }

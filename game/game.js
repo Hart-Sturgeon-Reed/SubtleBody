@@ -15,7 +15,7 @@ function setupGame(){
     stage = new TestStage();
     
     // set up interaction models
-    modes = [Soma];
+    modes = [Radial];
     mode = 0;
     model = {
         primary: function(){return Physics.behavior('attractor', {
@@ -34,9 +34,9 @@ function setupGame(){
     };
 
     // set up default particle system
-    particleBrush = Sparks;
+    particleBrush = Minimal;
     userBrushes = [Dancer1,Dancer2];//,User2,User3,User4];
-    defaultCursor = addUser(0,true,Pointer,Sparks);
+    defaultCursor = addUser(0,true,Pointer,Minimal);
     
     setupParticles();
     
@@ -49,16 +49,12 @@ function setupGame(){
     // add physics entities
     addEntities();
     
-    setupCollisions();
-    
-//    modes[mode]();
+    //modes[mode]();
     
     // render on each step
     world.on('step', function(){
         //updateCursor();
         updateParticles();
-        updateCells();
-        updateMotes();
         if(drawMode){
             drawFrame();
         }
@@ -84,39 +80,4 @@ function setupGame(){
         }
     });
     Physics.util.ticker.start();
-}
-
-function setupCollisions(){
-    foodQuery = Physics.query({
-        $or: [
-            { bodyA: { label: 'mote' }, bodyB: { label: 'cell' } }
-            ,{ bodyB: { label: 'mote' }, bodyA: { label: 'cell' } }
-        ]
-    });
-    bounceQuery = Physics.query({
-        $or: [
-            { bodyA: { label: 'cell' }, bodyB: { label: 'cell' } }
-            ,{ bodyB: { label: 'cell' }, bodyA: { label: 'cell' } }
-        ]
-    });
-    world.on('collisions:detected', function( data, e ){
-        var found = Physics.util.find( data.collisions, foodQuery );
-        if ( found ){
-            //console.log(found);
-            if(found.bodyA.label=='cell'){
-                consume(found.bodyA,found.bodyB);
-            }else{
-                consume(found.bodyB,found.bodyA);
-            }
-        }
-        found = Physics.util.find( data.collisions, bounceQuery );
-        if ( found ){
-            //console.log(found);
-            if(found.bodyA.self.energy>found.bodyB.self.energy){
-                bounce(found.bodyA,found.bodyB);
-            }else{
-                bounce(found.bodyB,found.bodyA);
-            }
-        }
-    });
 }

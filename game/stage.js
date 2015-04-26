@@ -26,6 +26,8 @@ function TestStage(){
     stage.ui = ui;
     stage.foreground = foreground;
     
+    stage.mandala.visible = false;
+    
     if(widescreen){
         stageWidth = renderer.width*2;
         stageHeight = renderer.height*2;

@@ -1,4 +1,4 @@
-function Skeleton(userId){
+function Skeleton(userId,data){
     var self = this;
     this.id = userId;
     this.com = new TrackingPoint();
@@ -11,7 +11,9 @@ function Skeleton(userId){
     this.radius = 0;
     this.handOffset = {x:0,y:0};
     this.handAngles = {l:0,r:0};
-    this.handDistance = {l:0,r:0};
+    this.handDistance = {l:0,r:0,t:0};
+    this.maxDistance = {l:0,r:0,t:0};
+    this.normDistance = {l:0,r:0,t:0};
     
     //Events
     this.pause = function(){};
@@ -66,6 +68,16 @@ function Skeleton(userId){
             py: data[30].value
         };
         self.rKnee.update(chunk);
+        
+        this.handDistance.l = self.lHand.pos.dist(self.torso.pos);
+        this.handDistance.r = self.rHand.pos.dist(self.torso.pos);
+        this.handDistance.t = this.handDistance.l+this.handDistance.r;
+        if (this.handDistance.l>this.maxDistance.l) this.maxDistance.l = this.handDistance.l;
+        if (this.handDistance.r>this.maxDistance.r) this.maxDistance.r = this.handDistance.r;
+        if (this.handDistance.t>this.maxDistance.t) this.maxDistance.t = this.handDistance.t;
+        this.normDistance = {l:this.handDistance.l/this.maxDistance.l,r:this.handDistance.r/this.maxDistance.r,t:this.handDistance.t/this.maxDistance.t};
+        
+        //console.log(this.normDistance);
     };
     this.sendState = function(){
         var lx = self.lHand.x/stageWidth;
@@ -77,19 +89,31 @@ function Skeleton(userId){
 
 function TrackingPoint(){
     var self = this;
+    var inset = 15;
+    this.bounds = {xMin:inset,xMax:stageWidth-inset,yMin:inset,yMax:stageHeight-inset};
     this.x = null;
     this.y = null;
     this.z = null;
     this.px = null;
     this.py = null;
+    this.pos = Physics.vector(0,0);
     this.old = [];
     this.update = function(data){
-        self.old.unshift({x:self.x,y:self.y,z:self.z,px:self.px,py:self.py});
+        self.old.unshift({x:self.x,y:self.y,z:self.z,px:self.px,py:self.py,pos:self.pos});
         this.x = data.x;
         this.y = data.y;
         this.z = data.z;
         this.px = data.px;
         this.py = data.py;
+        this.pos = Physics.vector(self.x,self.y);
+        var xMap = data.x/400;
+        var yMap = data.y/350;
+        var pxMap = (data.px/640) * stageWidth;
+        var pyMap = (data.py/480) * stageHeight;
+        this.x = center.x + (xMap*(stageWidth/1.2));
+        this.y = center.y - (yMap*(stageHeight/1.2));
+        this.checkBounds();
+        
         //self.old = self.old.slice(0,10);
     }
     this.getDelta = function(framesAgo){
@@ -100,6 +124,18 @@ function TrackingPoint(){
             return {x:deltaX,y:deltaY};
         }
         return {x:0,y:0};
+    }
+    this.checkBounds = function(){
+        if (this.x < this.bounds.xMin) {
+           this.x = this.bounds.xMin;
+        }else if (this.x > this.bounds.xMax){
+            this.x = this.bounds.xMax;
+        }
+        if (this.y < this.bounds.yMin) {
+            this.y = this.bounds.yMin;
+        }else if (this.y > this.bounds.yMax){
+            this.y = this.bounds.yMax;
+        }
     }
 }
 

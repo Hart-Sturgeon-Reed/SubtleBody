@@ -63,7 +63,7 @@ function addEntities(){
 function setPhysics(){
         collider.applyTo(cellBodies);
         collidable.applyTo(cellBodies.concat(moteBodies));
-        orbitalGrav.applyTo(cellBodies.concat(moteBodies));
+        orbitalGrav.applyTo(cellBodies);
     }
 
 function Planet(){

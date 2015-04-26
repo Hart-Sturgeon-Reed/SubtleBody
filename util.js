@@ -71,9 +71,10 @@ function TexturePack(){
     }
 }
 
-function getRadialSym(sym, root, origin, offset){
+function getRadialSym(sym, root, origin, offset, rotation){
     var points = [];
     var root = new Physics.vector(root.x,root.y);
+    if(rotation!=null) root.rotate(rotation,origin);
     var shift = (2*Math.PI)/sym;
     points.push(root.clone());
     for (var i=1;i<sym;i++){

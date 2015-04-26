@@ -19,6 +19,8 @@ function setupOSC() {
             }
         }else if(address=="/User Data"){
             if (lightBodyCreated){
+                lightBodyVisible = true;
+                stage.mandala.visible = true;
                 lightBody.update(msg.args);
             }
         

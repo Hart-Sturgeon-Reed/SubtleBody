@@ -49,7 +49,7 @@ function applyFlow(force){
 
 function addEntities(){
     for (var i=0;i<cellCount;i++){
-        new Cell(i+2);
+        new Cell();
     }
     for (var i=0;i<moteCount;i++){
         new Mote(i+2);
@@ -64,6 +64,7 @@ function setPhysics(){
         collider.applyTo(cellBodies);
         collidable.applyTo(cellBodies.concat(moteBodies));
         orbitalGrav.applyTo(cellBodies);
+        edgeCollider.applyTo(cellBodies);
     }
 
 function Planet(){

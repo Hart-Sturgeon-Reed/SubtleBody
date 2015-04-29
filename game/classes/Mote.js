@@ -2,7 +2,7 @@ function updateMotes(){
     for (var mote of motes){
         mote.update();
     }
-    if (deadMotes.length>10 && Math.random()>0.9){
+    if (deadMotes.length>10 && motes.length<100 && Math.random()>0.9){
         new Mote();
         setPhysics();
 //        var zombie = deadMotes.unshift();

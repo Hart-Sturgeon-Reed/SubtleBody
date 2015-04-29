@@ -39,6 +39,20 @@ function setupOSC(){
     oscSocket.bind(3000);
 }
 
+function sendOSC(label,data){
+    try {
+        var buf = osc.toBuffer({
+            address: '/kinect',
+            args: [data]
+        });
+
+        udp.send(buf,0,buf.length,3001,'192.168.0.101');
+        
+    } catch (error){
+        console.log(error);
+    }
+}
+
 setupOSC();
 
 io.on('connection', function(socket){
@@ -64,34 +78,34 @@ io.on('connection', function(socket){
                 game.emit('accel', accel, socket.num);
             }
         });
-        socket.on('primary click', function(){
+        socket.on('primary click', function(accel){
             console.log('primary click');
             if(game){
-                game.emit('primary click',socket.num);
+                game.emit('primary click',socket.num,accel);
             }
         });
-        socket.on('secondary click', function(){
+        socket.on('secondary click', function(accel){
             console.log('secondary click');
             if(game){
-                game.emit('secondary click',socket.num);
+                game.emit('secondary click',socket.num, accel);
             }
         });
-        socket.on('switch mode', function(e){
-            console.log('switching interaction modes');
+        socket.on('new cell', function(e){
+            console.log('new cell driver');
             if(game){
-                game.emit('switch mode');
+                game.emit('new cell',controller.num);
             }
         });
-        socket.on('disable effect', function(){
+        socket.on('reset cell', function(){
             console.log('disabling effect');
             if(game){
-                game.emit('disable effect',controller.num);
+                game.emit('reset cell',controller.num);
             }
         });
         socket.on('recolor', function(){
-            console.log('recoloring entities');
+            console.log('recoloring cell');
             if(game){
-                game.emit('recolor');
+                game.emit('recolor',controller.num);
             }
         });
         socket.on('pause', function(){
@@ -109,6 +123,10 @@ io.on('connection', function(socket){
     
     socket.on("disconnect", function(){
         console.log('client '+socket.sid+' disconnected');
+    });
+    socket.on("send osc", function(data){
+        console.log('sending message');
+        sendOSC('/kinect',data);
     });
 });
 

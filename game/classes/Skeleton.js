@@ -8,9 +8,8 @@ function Skeleton(userId,data){
     this.rHand = new TrackingPoint();
     this.lKnee = new TrackingPoint();
     this.rKnee = new TrackingPoint();
-    this.radius = 0;
     this.handOffset = {x:0,y:0};
-    this.handAngles = {l:0,r:0};
+    this.handAngles = {l:0,r:0,t:0};
     this.handDistance = {l:0,r:0,t:0};
     this.maxDistance = {l:0,r:0,t:0};
     this.normDistance = {l:0,r:0,t:0};
@@ -75,9 +74,13 @@ function Skeleton(userId,data){
         if (this.handDistance.l>this.maxDistance.l) this.maxDistance.l = this.handDistance.l;
         if (this.handDistance.r>this.maxDistance.r) this.maxDistance.r = this.handDistance.r;
         if (this.handDistance.t>this.maxDistance.t) this.maxDistance.t = this.handDistance.t;
-        this.normDistance = {l:this.handDistance.l/this.maxDistance.l,r:this.handDistance.r/this.maxDistance.r,t:this.handDistance.t/this.maxDistance.t};
+        this.normDistance = {
+            l:this.handDistance.l/this.maxDistance.l,
+            r:this.handDistance.r/this.maxDistance.r,
+            t:this.handDistance.t/this.maxDistance.t
+        };
+        this.handAngles.t = self.torso.pos.angle2(self.lHand.pos,self.rHand.pos);
         
-        //console.log(this.normDistance);
     };
     this.sendState = function(){
         var lx = self.lHand.x/stageWidth;
@@ -87,9 +90,10 @@ function Skeleton(userId,data){
     }
 }
 
-function TrackingPoint(){
+function TrackingPoint(smoothing){
     var self = this;
     var inset = 15;
+    if(smoothing==null) smoothing = 0.4;
     this.bounds = {xMin:inset,xMax:stageWidth-inset,yMin:inset,yMax:stageHeight-inset};
     this.x = null;
     this.y = null;
@@ -105,25 +109,24 @@ function TrackingPoint(){
         this.z = data.z;
         this.px = data.px;
         this.py = data.py;
-        this.pos = Physics.vector(self.x,self.y);
-        var xMap = data.x/400;
-        var yMap = data.y/350;
         var pxMap = (data.px/640) * stageWidth;
         var pyMap = (data.py/480) * stageHeight;
-        this.x = center.x + (xMap*(stageWidth/1.2));
-        this.y = center.y - (yMap*(stageHeight/1.2));
+        var sPos = smooth(pxMap,pyMap,this.x,this.y,smoothing);//{x:pxMap,y:pyMap};
+        this.x += sPos.x;
+        this.y += sPos.y;
         this.checkBounds();
+        this.pos = Physics.vector(self.x,self.y);
         
-        //self.old = self.old.slice(0,10);
+        //self.old = self.old.slice(0,10); //Could probably be uncommented, issue was with self.old.shift->unshift
     }
     this.getDelta = function(framesAgo){
         if(framesAgo==null){framesAgo=0};
         if(self.old[framesAgo]!=null){
             var deltaX = self.x - self.old[framesAgo].x;
             var deltaY = self.y - self.old[framesAgo].y;
-            return {x:deltaX,y:deltaY};
+            return new Physics.vector(deltaX,deltaY);
         }
-        return {x:0,y:0};
+        return new Physics.vector(0,0);
     }
     this.checkBounds = function(){
         if (this.x < this.bounds.xMin) {

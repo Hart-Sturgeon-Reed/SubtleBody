@@ -1,16 +1,16 @@
 angular.module('ControlApp', [])
 .controller('Controller', ['$scope', function($scope) {
     $scope.midControls = [
-        {text:'Reset World', down:false, label:'R'},
-        {text:'Switch Mode', down:false, label:'M'},
-        {text:'Disable Effect', down:false, label:'D'},
-        {text:'Pause', down:false, label:'P'}
+        {text:'Reset Cell', down:false, label:'R'},
+        {text:'Switch Color', down:false, label:'M'},
+        {text:'New Cell', down:false, label:'D'}//,
+        //{text:'Pause', down:false, label:'P'}
     ];
     $scope.leftControls = [
-        {text:'Set Secondary', down:true, label:'SS'},
+        //{text:'Dodge', down:true, label:'SS'},
     ];
     $scope.rightControls = [
-        {text:'Set Primary', down:true, label:'SP'},
+        //{text:'Swim Faster', down:true, label:'SP'},
     ];
 }]);
 
@@ -22,17 +22,20 @@ function init(){
     });
     
     $('.rightButton').click(function(e){
-        socket.emit('primary click');
+        socket.emit('primary click', accel);
     });
     
     $('.leftButton').click(function(e){
-        socket.emit('secondary click');
+        socket.emit('secondary click', accel);
+    });
+    $('#R').click(function(e){
+        socket.emit('reset cell');
     });
     $('#M').click(function(e){
-        socket.emit('switch mode');
+        socket.emit('recolor');
     });
     $('#D').click(function(e){
-        socket.emit('disable effect');
+        socket.emit('new cell');
     });
     $('#P').click(function(e){
         socket.emit('pause');
@@ -61,7 +64,7 @@ function accelerometerUpdate(event) {
     var xPosition = Math.atan2(aY, aZ);
     var yPosition = Math.atan2(aX, aZ);
     
-    var accel = {
+    accel = {
         x: aX,
         y: aY,
         z: aZ,

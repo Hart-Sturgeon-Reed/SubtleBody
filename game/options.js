@@ -56,7 +56,6 @@ function initOptions(){
     drawMode = false; // Draws pixi sprites
     kinectMap = false; // Map or project input onto screen
     useParallax = false; // Set up parallax scrolling background
-    widescreen = true;
     runSim = true; // Run physics sim on entities
     lightBodyCreated = false; // Has a user been spawned yet?
     lightBodyVisible = false; // Is the user visible?
@@ -66,7 +65,8 @@ function initOptions(){
     frame = 0;
 
     restrictedColors = ['deepBlue','orange','ltOrange','yellow'];
-    entityColors = [colors.ltOrange];// Rain [colors.blue,colors.dkBlue,colors.white];
+    entityColors = [colors.yellow,colors.red,colors.orange];
+    aiColors = [colors.teal,colors.blue,colors.dkBlue];
     entitySprite = null;
     entitySize = {
         max: 28,
@@ -83,7 +83,7 @@ function initOptions(){
     
     cellMin = 8;
     cellMax = 9;
-    cellCount = 60;
+    cellCount = 10;
 
     cellSprite = PIXI.Texture.fromImage('/assets/sprites/bubbleLt.png');
     cells = [];

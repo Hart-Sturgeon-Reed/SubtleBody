@@ -114,12 +114,12 @@ function Pointer(accel){
     this.position.y = stageHeight/2 - (accel.yTilt*(stageHeight/1.2));
     this.updatePos();
 }
-function Smooth(accel){
-    this.position.x += (accel.xTilt*(10));
-    this.position.y -= (accel.yTilt*(10));
-    this.checkBounds();
-    this.updatePos();
-}
+//function Smooth(accel){
+//    this.position.x += (accel.xTilt*(10));
+//    this.position.y -= (accel.yTilt*(10));
+//    this.checkBounds();
+//    this.updatePos();
+//}
 function Kinect(data){
     var kinectSpeed = 60;
     var toggleDepth = 32;

@@ -2,15 +2,21 @@ function updateCells(){
     for (var cl of cells){
         cl.update();
     }
+    
+    if (cells.length<cellCount){
+        new Cell();
+        setPhysics();
+    }
 }
 
 function Cell(userId,xPos,yPos,tint,scale){
     var self = this;
     this.ai = true;
-    if(userId!=null) this.id = userId; this.ai = false;
+    if(userId!=null) this.id = userId;
     if(scale==null) scale = range(cellMin,cellMax);
     this.energy = scale;
     var maxEnergy = 30;
+    var maxEnergyAi = 15;
     var hunger = 100;
     var satiety = 0;
     var breath = Math.random()*100;
@@ -35,12 +41,30 @@ function Cell(userId,xPos,yPos,tint,scale){
     var levels = 9;
     
     var opacity = scale/cellMax;
-    if (tint==null) var tint = getRandomProperty(entityColors,restrictedColors);
+    if (tint==null) {
+        if(self.ai){
+            tint = getRandomProperty(aiColors);
+        }else{
+            tint = getRandomProperty(entityColors);
+        }
+    } 
     if (xPos==null) var xPos = Math.random()*stageWidth;
     if (yPos==null) var yPos = Math.random()*stageHeight;
     
+    this.canDodge = true;
+    this.canSprint = true;
+    this.sprinting = false;
+    this.sprintTime = 1600;
+    this.sprintCost = 0.2;
+    this.timeSinceSprint = 0;
+    this.timeSinceDodge = 0;
+    this.dodgeDelay = 450;
+    this.dodgeCost = 0.5;
+    
     this.moveSpeed = 0.04;
     this.jumpSpeed = 0.16;
+    this.dodgeSpeed = 0.96;
+    this.sprintSpeed = 0.28;
     this.brain = new Brain(this,this.ai);
     this.body = Physics.body('circle', {
         x: xPos, // x-coordinate
@@ -90,10 +114,35 @@ function Cell(userId,xPos,yPos,tint,scale){
     };
     this.sprite.addChild(this.soma);
     
+    this.recolor = function(newTint){
+        tint = newTint;
+        this.soma.tint = newTint;
+        this.membrane.tint = newTint;
+        for (var moon of this.moons){
+            moon.view.tint = newTint;
+        }
+        this.generateOrganelles();
+    }
+    
+    this.reset = function(){
+        var prevEnergy = self.energy;
+        self.energy = cellMin;
+        self.setEnergy(prevEnergy);
+    }
+    
+    this.setEnergy = function(prevEnergy){
+        self.setScale(self.energy/prevEnergy);
+        outerSym = Math.ceil((self.energy/(maxEnergy*1.5))*levels)+1;
+        self.generateOrganelles();
+    }
+    
     this.grow = function(amount){
         var prevEnergy = self.energy;
         self.energy += amount;
-        if(self.energy > maxEnergy){
+        if(self.ai && self.energy > maxEnergyAi){
+            self.energy = maxEnergyAi;
+            console.log('constrained');
+        }else if(!self.ai && self.energy > maxEnergy){
             self.energy = maxEnergy;
         }
         self.setScale(self.energy/prevEnergy);
@@ -106,9 +155,12 @@ function Cell(userId,xPos,yPos,tint,scale){
         self.setScale(self.energy/prevEnergy);
         outerSym = Math.ceil((self.energy/(maxEnergy*1.5))*levels)+1;
         self.generateOrganelles();
-        if(self.energy<3){
+        if(self.energy<3 && self.ai){
             stage.ents.removeChild(self.sprite);
             world.remove(self.body);
+            cells.splice(cells.indexOf(self),1);
+            //cellBodies.splice(cells.indexOf(self.body),1);
+            setPhysics();
             if(hasMoons){
                 for (var moon of self.moons){
                     stage.ents.removeChild(moon.view);
@@ -299,6 +351,20 @@ function Cell(userId,xPos,yPos,tint,scale){
             self.body.state.old.pos.x = stageWidth + offset;
             self.body.state.vel.x *= dampening;// Math.random()*0.1;
             if(hasMoons) self.resetMoons();
+        }
+        
+        if(!this.canDodge){
+            this.timeSinceDodge += 10;
+            if(this.timeSinceDodge>this.dodgeDelay && this.energy > cellMin+this.dodgeCost){
+                this.canDodge = true;
+            }
+        }
+        if(this.sprinting){
+            this.timeSinceSprint += 10;
+            if(this.timeSinceSprint>this.sprintTime){
+                console.log('done sprinting');
+                this.sprinting = false;
+            }
         }
         
         //Move anchor point

@@ -58,7 +58,7 @@ function Soma(){
     }));
     
     setBackground('black');
-    setEntityColors([colors.red,colors.orange,colors.ltOrange,colors.white]);
+    setEntityColors([colors.red,colors.orange,colors.ltOrange]);
     setEntitySprite('/assets/sprites/bubbleLt.png',1);
     setEntitySpriteScale(1.9);
     setEntityBlendMode(PIXI.blendModes.SCREEN);
@@ -67,7 +67,7 @@ function Soma(){
     
     runSim = true;
     setCollider(true);
-    setEdge(false);
+    setEdge(true);
     showParallax(false);
     
     model.primary = function(){return Physics.behavior('attractor', {

@@ -60,6 +60,7 @@ function setupGame(){
         updateParticles();
         updateCells();
         updateMotes();
+        updateLightBody();
         if(drawMode){
             drawFrame();
         }

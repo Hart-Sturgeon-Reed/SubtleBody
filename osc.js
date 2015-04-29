@@ -23,6 +23,14 @@ function setupOSC() {
                 stage.mandala.visible = true;
                 lightBody.update(msg.args);
             }
+            
+        }else if (address=="/flow"){
+            var delta = {x:msg.args[0].value,y:msg.args[1].value};
+            //console.log(delta);
+            var force = {x:delta.x*0.06,y:delta.y*-0.06};
+
+            //console.log(delta);
+            applyFlow(force);
         
         //Old Skeleton tracking
         }else if(address=="/Skeleton Added"){

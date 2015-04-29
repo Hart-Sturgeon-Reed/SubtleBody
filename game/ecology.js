@@ -1,6 +1,12 @@
 function consume(cell, mote){
     //console.log('nom');
-    cell.self.grow(mote.self.energy*0.07);
+    var mod;
+    if(cell.self.ai){
+        mod = 0.01;
+    }else{
+        mod = 0.09;
+    }
+    cell.self.grow(mote.self.energy*mod);
     cell.self.resetMoons();
     stage.motes.removeChild(mote.self.sprite);
     world.remove(mote);
@@ -19,6 +25,12 @@ function bounce(larger, smaller){
     
     var diff = larger.self.energy-smaller.self.energy;
     larger.self.grow(smaller.self.energy*0.004);
-    smaller.self.damage(diff/10);
+    var mod;
+    if (larger.self.ai){
+        mod = 10;
+    }else{
+        mod = 5;
+    }
+    smaller.self.damage(diff/mod);
     //smaller.self.damage(larger.state.vel.norm());
 }

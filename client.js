@@ -12,31 +12,33 @@ function init(){
         socket.emit('init game');
     });
     
-    socket.on('primary click', function(socketNum){
-        //(getCursor(socketNum)).toggleToPrimary();
+    socket.on('primary click', function(socketNum,accel){
+        checkDodge(socketNum,accel);//checkSprint(socketNum);
     });
-    socket.on('secondary click', function(socketNum){
-        //(getCursor(socketNum)).toggleToSecondary();
+    socket.on('secondary click', function(socketNum,accel){
+        checkDodge(socketNum,accel);
     });
     socket.on('switch mode', function(){
         switchMode();
     });
-    socket.on('recolor', function(){
-        
+    socket.on('recolor', function(socketnum){
+        cycleCellColor(socketnum);
     });
     socket.on('pause', function(){
         togglePause();
     });
-    socket.on('disable effect', function(socketNum){
-        //(getCursor(socketNum)).disableEffect(false);
+    socket.on('new cell', function(socketNum){
+        newCell(socketNum);
+    });
+    socket.on('reset cell', function(socketNum){
+        resetCell(socketNum);
     });
     socket.on('add controller', function(socketNum){
         //addUser(socketNum,false,Smooth);
         addCellDriver(socketNum);
     });
     socket.on('controller disconnected', function(socketNum){
-        var driver = getDriver(socketNum);
-        if(driver!=null) driver.brain.ai = true; driver.ai = true;
+        removeUser(socketNum);
     });
     
     socket.on('accel', function(accel, socketNum){
@@ -111,15 +113,8 @@ function addUser(socketNum, isDefault, filter, brush){
 function removeUser(socketNum){
     var driver = getDriver(socketNum);
     if(driver!=null) driver.brain.ai = true; driver.ai = true;
-//    var cursor = getCursor(socketNum);
-//    if(cursor!=null){
-//        var dead = cursors.splice(cursors.indexOf(cursor),1)[0];
-//        dead.disableEffect(true);
-//        dead = null;
-//        console.log('removing controller '+socketNum);
-//    }else{
-//        console.log('removing old controller: number '+socketNum);
-//    }
+    cycleCellColor(socketNum);
+    drivers.splice(drivers.indexOf(driver),1);
 }
 
 function getCursor(socketNum){

@@ -63,6 +63,8 @@ function addEntities(){
 function setPhysics(){
     collider.applyTo(cellBodies);
     collidable.applyTo(cellBodies.concat(moteBodies));
-    orbitalGrav.applyTo(cellBodies.concat(moteBodies));
+    orbitalGrav.applyTo(cellBodies);
     edgeCollider.applyTo(cellBodies);
+    lAttractor.applyTo(moteBodies);
+    rAttractor.applyTo(moteBodies);
 }

@@ -95,7 +95,7 @@ function TestStage(){
     
     console.log("Stage is "+stageWidth+"px wide & "+stageHeight+"px high");
     
-    stage.scale = {x:0.5, y:0.5};
+    //stage.scale = {x:0.5, y:0.5};
     
     return stage;
 }

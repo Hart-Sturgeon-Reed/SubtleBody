@@ -46,6 +46,20 @@ function BasicWorld() {
     world.add(sweepPrune);
     world.add(Physics.behavior('interactive', { el: renderer.container }));
     
+    lAttractor = Physics.behavior('attractor', {
+        order: 1.2,
+        strength: 0.8,
+        max: 300,
+        min: 20
+    });
+    
+    rAttractor = Physics.behavior('attractor', {
+        order: 1.2,
+        strength: 0.8,
+        max: 300,
+        min: 20
+    });
+    
     world.changeGrav = function(newGrav){
         world.removeBehavior(gravity);
         gravity = Physics.behavior('constant-acceleration', 

@@ -63,6 +63,8 @@ function initOptions(){
     lightBody = null; // Main user (skeleton tracking);
     widescreen = false; //Upscale by 2
     
+    handAttract = true;
+    
     frame = 0;
 
     //restrictedColors = ['deepBlue','orange','ltOrange','yellow'];

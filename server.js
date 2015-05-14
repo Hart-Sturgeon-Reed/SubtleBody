@@ -41,8 +41,10 @@ function setupOSC(){
 
 function sendOSC(label,data){
     var items = [];
-    for (var d of data){
-        items.push(d);
+    if(data!=null){
+        for (var d of data){
+            items.push(d);
+        }
     }
     try {
         var buf = osc.toBuffer({

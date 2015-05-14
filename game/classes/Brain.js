@@ -12,9 +12,9 @@ function Brain(self,ai){
     
     this.move = function(accel){
         if(self.sprinting){
-            self.body.applyForce({x:accel.xTilt*sprint*0.3,y:accel.yTilt*sprint*0.3});
+            self.body.applyForce({x:accel.xTilt*sprint,y:-accel.yTilt*sprint});
         }else{
-            self.body.applyForce({x:accel.xTilt*move*0.3,y:accel.yTilt*move*0.3});
+            self.body.applyForce({x:accel.xTilt*move,y:-accel.yTilt*move});
         }
         
     }
@@ -25,7 +25,7 @@ function Brain(self,ai){
             //console.log('dodging');
             self.canDodge = false;
             self.timeSinceDodge = 0;
-            self.body.applyForce({x:accel.xTilt*dodge,y:accel.yTilt*dodge});
+            self.body.applyForce({x:accel.xTilt*dodge,y:-accel.yTilt*dodge});
             var prevEnergy = self.energy;
             self.energy -= self.dodgeCost;
             self.setEnergy(prevEnergy);
@@ -57,7 +57,7 @@ function Brain(self,ai){
             if (Math.random()>0.6){
                 if (self.brain.movingLeft){
                     self.body.applyForce({x:move,y:0});
-                }else {
+                }else{
                     self.body.applyForce({x:-move,y:0});
                 }
             }else if (Math.random()>0.6){

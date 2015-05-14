@@ -25,7 +25,30 @@ function cycleCellColor(socketNum){
             } 
         }
         cell.recolor(color);
+        setControllerColor(socketNum,color);
     }
+}
+
+function setControllerColor(socketNum,color){
+    var hexcolor,style;
+    switch(color){
+        case colors.red:
+            hexcolor = '#CB3334';
+            style = 'red';
+            break;
+        case colors.orange:
+            hexcolor = '#DC6C00';
+            style = 'orange';
+            break;
+        case colors.ltOrange:
+            hexcolor = '#FEA344';
+            style = 'ltOrange';
+            break;
+        default:
+            hexcolor = '#444';
+            style = '';
+    }
+    socket.emit('set color',socketNum,hexcolor,style);
 }
 
 function checkDodge(socketNum,accel){

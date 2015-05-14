@@ -16,7 +16,7 @@ function Cell(userId,xPos,yPos,tint,scale){
     if(scale==null) scale = range(cellMin,cellMax);
     this.energy = scale;
     var maxEnergy = 30;
-    var maxEnergyAi = 15;
+    var maxEnergyAi = 20;
     var hunger = 100;
     var satiety = 0;
     var breath = Math.random()*100;
@@ -61,10 +61,10 @@ function Cell(userId,xPos,yPos,tint,scale){
     this.dodgeDelay = 450;
     this.dodgeCost = 0.5;
     
-    this.moveSpeed = 0.04;
+    this.moveSpeed = 0.04 * 0.3;
     this.jumpSpeed = 0.16;
     this.dodgeSpeed = 0.96;
-    this.sprintSpeed = 0.28;
+    this.sprintSpeed = 0.28 * 0.3;
     this.brain = new Brain(this,this.ai);
     this.body = Physics.body('circle', {
         x: xPos, // x-coordinate
@@ -115,6 +115,7 @@ function Cell(userId,xPos,yPos,tint,scale){
     this.sprite.addChild(this.soma);
     
     this.recolor = function(newTint){
+        this.tint = newTint;
         tint = newTint;
         this.soma.tint = newTint;
         this.membrane.tint = newTint;
@@ -122,6 +123,8 @@ function Cell(userId,xPos,yPos,tint,scale){
             moon.view.tint = newTint;
         }
         this.generateOrganelles();
+        this.symbiotes.tint = newTint;
+        this.updateSymbiotes();
     }
     
     this.reset = function(){
@@ -141,9 +144,19 @@ function Cell(userId,xPos,yPos,tint,scale){
         self.energy += amount;
         if(self.ai && self.energy > maxEnergyAi){
             self.energy = maxEnergyAi;
-            console.log('constrained');
-        }else if(!self.ai && self.energy > maxEnergy){
-            self.energy = maxEnergy;
+            //console.log('constrained');
+        }else if(!self.ai && self.energy > self.xpReq){
+            if(self.level>=self.maxLevel){
+                console.log('max level');
+                self.energy = self.xpReq;
+            }else{
+                console.log('level up');
+                self.level++;
+                self.energy *= 0.5;
+                self.xpReq += self.xpInc;
+                self.xpInc *= 1.2;
+                self.updateSymbiotes();
+            }
         }
         self.setScale(self.energy/prevEnergy);
         outerSym = Math.ceil((self.energy/(maxEnergy*1.5))*levels)+1;
@@ -156,14 +169,14 @@ function Cell(userId,xPos,yPos,tint,scale){
         outerSym = Math.ceil((self.energy/(maxEnergy*1.5))*levels)+1;
         self.generateOrganelles();
         if(self.energy<3 && self.ai){
-            stage.ents.removeChild(self.sprite);
+            stage.cells.removeChild(self.sprite);
             world.remove(self.body);
             cells.splice(cells.indexOf(self),1);
             //cellBodies.splice(cells.indexOf(self.body),1);
             setPhysics();
             if(hasMoons){
                 for (var moon of self.moons){
-                    stage.ents.removeChild(moon.view);
+                    stage.cells.removeChild(moon.view);
                     world.remove(moon);
                 }
             }
@@ -241,6 +254,17 @@ function Cell(userId,xPos,yPos,tint,scale){
             this.sprite.addChild(so);
         }
     }
+    this.level = 3;
+    this.maxLevel = 9;
+    this.xpReq = 12;
+    this.xpInc = 2;
+    var symbioteOffset = 16;
+    
+    this.symbiotes = new SpriteRing(this.sprite,this.level,cellSprite,symbioteOffset,{x:0,y:0},0,20,0.6,tint);
+    
+    this.updateSymbiotes = function(){
+        this.symbiotes.update(self.level,symbioteOffset);
+    }
     
     this.generateOrganelles();
     
@@ -293,7 +317,7 @@ function Cell(userId,xPos,yPos,tint,scale){
             };
             constraints.distanceConstraint(this.anchorPoint, bd, 0.3);
             world.add(bd);
-            stage.ents.addChild(so);
+            stage.cells.addChild(so);
             this.moons.push(bd);
         }
 
@@ -362,7 +386,7 @@ function Cell(userId,xPos,yPos,tint,scale){
         if(this.sprinting){
             this.timeSinceSprint += 10;
             if(this.timeSinceSprint>this.sprintTime){
-                console.log('done sprinting');
+//                console.log('done sprinting');
                 this.sprinting = false;
             }
         }
@@ -427,7 +451,7 @@ function Cell(userId,xPos,yPos,tint,scale){
     }
     
     world.add(this.body);
-    stage.ents.addChild(this.sprite);
+    stage.cells.addChild(this.sprite);
     cells.push(this);
     cellBodies.push(this.body);
 }

@@ -24,6 +24,14 @@ function addParticle(pool,position){
     }
 }
 
+function particleBurst(pool,position,num) { //Particle 'explosion'
+  
+}
+
+function particleSpray(pool,position,num,vx,vy,vxs,vys){ //Particle 'spray' in a direction
+  
+}
+
 function updateParticles(){
     frame++;
     if(frame%1==0){

@@ -2,7 +2,7 @@ function TestStage(){
     var stage = new PIXI.DisplayObjectContainer();
     var mandala = new PIXI.DisplayObjectContainer();
     var motes = new PIXI.DisplayObjectContainer();
-    var ents = new PIXI.DisplayObjectContainer();
+    var cells = new PIXI.DisplayObjectContainer();
     var ui = new PIXI.DisplayObjectContainer();
     var parallax = new PIXI.DisplayObjectContainer();
     var background = new PIXI.DisplayObjectContainer();
@@ -14,7 +14,7 @@ function TestStage(){
     stage.addChild(drawing);
     stage.addChild(mandala);
     stage.addChild(motes);
-    stage.addChild(ents);
+    stage.addChild(cells);
     stage.addChild(ui);
     stage.addChild(foreground);
     stage.parallax = parallax;
@@ -22,7 +22,7 @@ function TestStage(){
     stage.background = background;
     stage.mandala = mandala;
     stage.motes = motes;
-    stage.ents = ents;
+    stage.cells = cells;
     stage.ui = ui;
     stage.foreground = foreground;
     
@@ -30,8 +30,14 @@ function TestStage(){
     
     renderer.resize(document.width,document.height);
     
-    stageWidth = renderer.width;
-    stageHeight = renderer.height;
+    
+    if(widescreen){
+        stageWidth = renderer.width*2;
+        stageHeight = renderer.height*2;
+    }else{
+        stageWidth = renderer.width;
+        stageHeight = renderer.height;
+    }
     
     
     //Parallax

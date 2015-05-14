@@ -2,9 +2,12 @@
 
 <html ng-app='ControlApp'>
 <head>
-    <title>Body Editing Demo</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Soma Controller</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <meta name="mobile-web-app-capable" content="yes"> 
+    
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" sizes="192x192" href="/assets/icon.png">
     
     <script src="/lib/jquery.js"></script>
     <script src="/lib/jquery.gsap.min.js"></script>
@@ -22,11 +25,11 @@
 
 <body ng-controller='Controller'>
     <div class='tex'></div>
-    <div class="menu lv2">
-        Body Editing
+    <div class="menu accent lv2">
+        Soma
     </div>
-    <div class='button leftButton lv3'>Dodge</div>
-    <div class='button rightButton lv3'>Dodge</div>
+    <div class='button accent leftButton lv3'>Dodge</div>
+    <div class='button accent rightButton lv3'>Dodge</div>
     <div class='scroller'>
         <div class="pane">
             <div ng-repeat='item in leftControls' class='control lv1' id='{{item.label}}'>{{item.text}}</div>

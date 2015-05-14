@@ -10,8 +10,8 @@ function setupOSC() {
                 var skeleton = newSkeleton(userId,msg.args);
                 createLightBody(skeleton);
             }else if (!lightBodyVisible){
-                lightBody.skeleton = skeleton;
-                lightBodyVisible = true;
+//                lightBody.skeleton = skeleton;
+                showLightBody();
             }
         }else if(address=="/User Lost"){
             if (lightBodyCreated && lightBodyVisible){
@@ -19,7 +19,6 @@ function setupOSC() {
             }
         }else if(address=="/User Data"){
             if (lightBodyCreated){
-                lightBodyVisible = true;
                 stage.mandala.visible = true;
                 lightBody.update(msg.args);
             }

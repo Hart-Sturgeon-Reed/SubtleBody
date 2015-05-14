@@ -49,8 +49,9 @@ function initOptions(){
     cursors = [];
     brushes = [];
     entities = [];
-    numPlanets = 12; // 160 is about max with decent performance
+    
     paused = false;
+    sendData = false; // Send incoming skeleton data to another computer over OSC`
     useWind = false; // Applies controller delta (scaled) as a force to all entities
     drawRadial = false; // Adds radial symmetry to particle systems
     drawMode = false; // Draws pixi sprites
@@ -60,12 +61,12 @@ function initOptions(){
     lightBodyCreated = false; // Has a user been spawned yet?
     lightBodyVisible = false; // Is the user visible?
     lightBody = null; // Main user (skeleton tracking);
-    cells = []; // Array of cellphone users
-    motes = []; // Array of energy particles
+    widescreen = false; //Upscale by 2
+    
     frame = 0;
 
-    restrictedColors = ['deepBlue','orange','ltOrange','yellow'];
-    entityColors = [colors.yellow,colors.red,colors.orange];
+    //restrictedColors = ['deepBlue','orange','ltOrange','yellow'];
+    entityColors = [colors.ltOrange,colors.red,colors.orange];
     aiColors = [colors.teal,colors.blue,colors.dkBlue];
     entitySprite = null;
     entitySize = {
@@ -73,7 +74,7 @@ function initOptions(){
         min: 6
     }
     
-    motes = [];
+    motes = []; // Array of energy particles
     deadMotes = [];
     moteBodies = [];
     moteMin = 2;
@@ -81,13 +82,12 @@ function initOptions(){
     moteCount = 180;
     moteColors = [colors.purple];
     
+    cells = []; // Array of cellphone users
+    cellBodies = [];
     cellMin = 8;
     cellMax = 9;
     cellCount = 10;
-
     cellSprite = PIXI.Texture.fromImage('/assets/sprites/bubbleLt.png');
-    cells = [];
-    cellBodies = [];
     
     drivers = [];
 

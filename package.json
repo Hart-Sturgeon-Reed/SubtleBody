@@ -2,7 +2,7 @@
   "name": "SubtleBody",
   "version": "0.0.1",
   "description": "A node web app to represent the body as an abstract mandala using skeletal tracking",
-  "main": "phyxi.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

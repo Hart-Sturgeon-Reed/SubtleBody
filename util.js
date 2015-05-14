@@ -42,6 +42,34 @@ function arrayContains(array, element) {
     return false;
 }
 
+function clamp(value, min, max){
+  if(value>max){
+    return max;
+  }else if(value<min){
+    return min;
+  }
+  return value;
+}
+
+function wrap(value, min, max){
+  if(value>max){
+    return min + (value-max);
+  }else if(value<min){
+    return max - (min-value);
+  }
+  return value;
+}
+
+function clampNorm(vector, min, max){
+  var norm = vector.clone().norm()
+  if (norm>max){
+    return vector.normalize().mult(max);
+  }else if (norm<min){
+    return vector.normalize().mult(min);
+  }
+  return vector;
+}
+
 function range(min, max){
     return min + Math.random()*(max-min);
 }
@@ -73,6 +101,7 @@ function TexturePack(){
 
 function getRadialSym(sym, root, origin, rotation){
     var points = [];
+    if(sym==0) return points;
     var root = new Physics.vector(root.x,root.y);
     if(rotation!=null) root = root.rotate(rotation,origin).clone();
     var shift = (2*Math.PI)/sym;

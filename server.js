@@ -63,6 +63,12 @@ io.on('connection', function(socket){
     socket.on('init game',function(){
         game = socket;
         console.log('client '+socket.sid+' is the game client');
+        socket.on('set color',function(num,color,style){
+            var controller = getController(num);
+            if(controller==null) {console.log('error: controller '+num+' not found'); return;}
+            console.log('setting controller '+num+' to color '+color);
+            controller.emit('set color',color,style);
+        });
     });
     
     socket.on('init controller',function(){
@@ -129,6 +135,13 @@ io.on('connection', function(socket){
         sendOSC('/kinect',data);
     });
 });
+
+function getController(num){
+    for(var c of controllers){
+        if(c.num==num) return c;
+    }
+    return null;
+}
 
 
 

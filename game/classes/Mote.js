@@ -25,8 +25,8 @@ function Mote(xPos,yPos,tint,vel){
     var xPos = Math.random()*stageWidth;
     var yPos = Math.random()*stageHeight;
     
-    this.moveSpeed = 0.02;
-    this.jumpSpeed = 0.03;
+    this.moveSpeed = 0.0028;
+    this.jumpSpeed = 0.015;
     this.energy = scale;
     this.brain = new Brain(this);
     this.body = Physics.body('circle', {
@@ -34,7 +34,7 @@ function Mote(xPos,yPos,tint,vel){
         y: yPos, // y-coordinate
         radius: scale * 1.8,
         restitution: 0.3,
-        mass: scale/5,
+        mass: scale/12,
         angle: Math.random(),
         label: 'mote'
     });

@@ -79,6 +79,8 @@ function Skeleton(userId,data){
             r:this.handDistance.r/this.maxDistance.r,
             t:this.handDistance.t/this.maxDistance.t
         };
+        this.handAngles.l = self.torso.pos.angle2(self.lHand.pos,self.head.pos);
+        this.handAngles.r = self.torso.pos.angle2(self.rHand.pos,self.head.pos);
         this.handAngles.t = self.torso.pos.angle2(self.lHand.pos,self.rHand.pos);
         
     };
@@ -95,17 +97,17 @@ function TrackingPoint(smoothing){
     var inset = 15;
     if(smoothing==null) smoothing = 0.4;
     this.bounds = {xMin:inset,xMax:stageWidth-inset,yMin:inset,yMax:stageHeight-inset};
-    this.x = null;
-    this.y = null;
-    this.z = null;
+    this.x = 0;
+    this.y = 0;
+    this.z = 0;
     this.px = null;
     this.py = null;
     this.pos = Physics.vector(0,0);
     this.old = [];
     this.update = function(data){
         self.old.unshift({x:self.x,y:self.y,z:self.z,px:self.px,py:self.py,pos:self.pos});
-        this.x = data.x;
-        this.y = data.y;
+//        this.x = data.x;
+//        this.y = data.y;
         this.z = data.z;
         this.px = data.px;
         this.py = data.py;
@@ -117,7 +119,7 @@ function TrackingPoint(smoothing){
         this.checkBounds();
         this.pos = Physics.vector(self.x,self.y);
         
-        //self.old = self.old.slice(0,10); //Could probably be uncommented, issue was with self.old.shift->unshift
+        self.old = self.old.slice(0,10); //Could probably be uncommented, issue was with self.old.shift->unshift
     }
     this.getDelta = function(framesAgo){
         if(framesAgo==null){framesAgo=0};

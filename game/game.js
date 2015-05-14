@@ -71,12 +71,6 @@ function setupGame(){
     Physics.util.ticker.on(function(time){
         if(!paused){
             // custom physics and state checking should go here
-            for (var ent of entities){
-                ent.update();
-            }
-            if(useParallax){
-                sky.scroll();
-            }
             if(runSim){
                 world.step(time);
             }else{

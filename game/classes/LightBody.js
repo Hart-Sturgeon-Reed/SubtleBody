@@ -17,10 +17,13 @@ function LightBody(skeleton){
         this.coreR.update(rotSym,coreOff,{x:0,y:0},-coreRot);
     }
     this.update = function(data){
-        
+        if(!lightBodyVisible) showLightBody();
         if(self.skeleton) {
             self.skeleton.update(data);
-            //this.inner.setPosition(self.skeleton.lHand.x,self.skeleton.lHand.y);
+            this.lHand.setPosition(self.skeleton.lHand.x,self.skeleton.lHand.y);
+            this.rHand.setPosition(self.skeleton.rHand.x,self.skeleton.rHand.y);
+            this.lHand.update(handSym,coreOff*self.skeleton.normDistance.l,{x:0,y:0},skeleton.handAngles.l);
+            this.rHand.update(handSym,coreOff*self.skeleton.normDistance.r,{x:0,y:0},skeleton.handAngles.r);
             this.inner.update(innerSym,innerOff*self.skeleton.normDistance.t,{x:0,y:0},0);
             this.outer.update(outerSym,outerOff*self.skeleton.normDistance.t,{x:0,y:0},Math.PI);
             if(useWind){
@@ -31,7 +34,12 @@ function LightBody(skeleton){
                 applyFlow(force);
             }
             //console.log(self.skeleton.torso.z);
-            //socket.emit('send osc', data);
+            
+            //Preprocess data to send to stephen
+            
+            if(sendData){
+                socket.emit('send osc', data);
+            }
         }else{
             console.log('skeleton lost');
         }
@@ -52,6 +60,7 @@ function LightBody(skeleton){
     var rotSym = 3;
     var coreLRot = 0;
     var coreRRot = 0;
+    var handSym = 6;
 
     this.outer = new SpriteRing(this.sprite,outerSym,sprites.bubLt,outerOff,center,Math.PI,outerMag,0.3,colors.red);
     this.inner = new SpriteRing(this.sprite,innerSym,sprites.bubLt,innerOff,center,Math.PI,outerMag,0.3,colors.red);
@@ -59,6 +68,9 @@ function LightBody(skeleton){
     this.coreL = new SpriteRing(this.sprite,rotSym,sprites.bubLt,coreOff,center,coreLRot,coreMag,0.4,colors.white);
     this.coreR = new SpriteRing(this.sprite,rotSym,sprites.bubLt,coreOff,center,coreLRot,coreMag,0.4,colors.white);
     this.core = new SpriteRing(this.sprite,coreSym,sprites.bubLt,coreOff,center,Math.PI,coreMag,0.7,colors.orange);
+    
+    this.lHand = new SpriteRing(this.sprite,handSym,sprites.bubLt,coreOff,center,0,coreMag,0.6,colors.red);
+    this.rHand = new SpriteRing(this.sprite,handSym,sprites.bubLt,coreOff,center,0,coreMag,0.6,colors.red);
     
 }
 
@@ -69,60 +81,13 @@ function createLightBody(skeleton){
 }
 
 function hideLightBody(){
-    //lightBodyVisible = false;
+    //console.log('hiding lightbody');
+    animTo(lightBody.sprite, {alpha: 0.5}, 5);
+    lightBodyVisible = false;
 }
 
-function SpriteRing(container,sym,sprite,offset,center,angle,scale,alpha,tint) {
-    this.sprite = new PIXI.DisplayObjectContainer();
-    this.moons = [];
-    if (angle==null) angle = 0;
-    if (scale==null) scale = 30;
-    if (alpha==null) alpha = 0.8;
-    if (tint==null) tint = getRandomProperty(entityColors);
-    this.sprite.anchor = {x:0.5,y:0.5};
-    this.sprite.position.x = center.x;
-    this.sprite.position.y = center.y;
-    var points = getRadialSym(sym, {x:0,y:-offset}, {x:0,y:0}, angle);
-        for (var p of points){
-            var og = new PIXI.Sprite(sprite);
-            og.width = scale;
-            og.height = scale;
-            og.alpha = alpha;
-            og.tint = tint;
-            og.blendMode = PIXI.blendModes.SCREEN;
-            og.anchor = {
-                x:0.5,
-                y:0.5
-            };
-            og.position.x = p.x;
-            og.position.y = p.y;
-            this.moons.push(og);
-            this.sprite.addChild(og);
-        }
-    container.addChild(this.sprite);
-    this.setPosition = function(x,y){
-        this.sprite.position.x = x;
-        this.sprite.position.y = y;
-    }
-    this.set = function(prop,value){
-        for (var moon of this.moons){
-            moon[prop]=value;
-        }
-    }
-    this.update = function(newSym,offset,origin,angle){
-        if (angle==null) angle = 0;
-        if (origin==null) origin = {x:0,y:0};
-        if(newSym!=sym){
-            
-        }else{
-            var points = getRadialSym(newSym, {x:0,y:-offset}, {x:0,y:0}, angle);
-            var i =0;
-            for (var p of points){
-                var moon = this.moons[i];
-                i++;
-                moon.position.x = p.x;
-                moon.position.y = p.y;
-            }
-        }
-    }
+function showLightBody(){
+    //console.log('showing lightbody');
+    animTo(lightBody.sprite, {alpha: 1}, 2);
+    lightBodyVisible = true;
 }

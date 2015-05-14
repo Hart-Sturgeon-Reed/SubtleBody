@@ -3,8 +3,8 @@ angular.module('ControlApp', [])
     $scope.midControls = [
         {text:'Reset Cell', down:false, label:'R'},
         {text:'Switch Color', down:false, label:'M'},
-        {text:'New Cell', down:false, label:'D'}//,
-        //{text:'Pause', down:false, label:'P'}
+        {text:'New Cell', down:false, label:'D'},
+        {text:'Pause', down:false, label:'P'}
     ];
     $scope.leftControls = [
         //{text:'Dodge', down:true, label:'SS'},
@@ -15,10 +15,16 @@ angular.module('ControlApp', [])
 }]);
 
 function init(){
+    new TimelineLite().to($('.scroller'),1.0,{'scrollTop':270,delay:1});
     socket = io();
     socket.on('start up',function(id) {
         console.log('We are Control Panel #'+id);
         socket.emit('init controller');
+    });
+    
+    socket.on('set color', function(color,style){
+        $('.accent').css({backgroundColor:color});
+        $('.scroller').addClass(style);
     });
     
     $('.rightButton').click(function(e){

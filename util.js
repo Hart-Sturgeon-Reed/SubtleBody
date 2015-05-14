@@ -42,6 +42,10 @@ function arrayContains(array, element) {
     return false;
 }
 
+function avg(one,two){
+    return (one+two)/2;
+}
+
 function clamp(value, min, max){
   if(value>max){
     return max;
@@ -103,6 +107,7 @@ function getRadialSym(sym, root, origin, rotation){
     var points = [];
     if(sym==0) return points;
     var root = new Physics.vector(root.x,root.y);
+    var origin = new Physics.vector(origin.x,origin.y);
     if(rotation!=null) root = root.rotate(rotation,origin).clone();
     var shift = (2*Math.PI)/sym;
     points.push(root.clone());

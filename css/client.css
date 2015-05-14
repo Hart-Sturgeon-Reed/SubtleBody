@@ -48,6 +48,7 @@ body {
 .rough {background-image: url("../assets/textures/roughPaper.png");}
 .paperboard {background-image: url("../assets/textures/paperboard.png");}
 .escher {background-image: url("../assets/textures/escherDark.png");}
+.sea {background-image: url("../assets/textures/blackSea.png");};
 
 .tree {background-image: url("../assets/backgrounds/tree.png");}
 

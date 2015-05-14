@@ -40,13 +40,17 @@ function setupOSC(){
 }
 
 function sendOSC(label,data){
+    var items = [];
+    for (var d of data){
+        items.push(d);
+    }
     try {
         var buf = osc.toBuffer({
-            address: '/kinect',
-            args: [data]
+            address: label,
+            args: items
         });
 
-        udp.send(buf,0,buf.length,3001,'192.168.0.101');
+        oscSocket.send(buf,0,buf.length,3000,'localhost');//'192.168.0.101');
         
     } catch (error){
         console.log(error);
@@ -78,6 +82,8 @@ io.on('connection', function(socket){
         controllers.push(controller);
         socket.isController = true;
         game.emit('add controller', socket.num);
+        sendOSC('/controller added');
+        
         // controller events
         socket.on('accel', function(accel){
             if(game){
@@ -123,6 +129,7 @@ io.on('connection', function(socket){
         socket.on("disconnect", function(){
             if(game){
                 game.emit('controller disconnected', socket.num);
+                sendOSC('/controller lost');
             }
         });
     });
@@ -130,9 +137,9 @@ io.on('connection', function(socket){
     socket.on("disconnect", function(){
         console.log('client '+socket.sid+' disconnected');
     });
-    socket.on("send osc", function(data){
-        console.log('sending message');
-        sendOSC('/kinect',data);
+    socket.on("send osc", function(label,data){
+        //console.log('sending message');
+        sendOSC(label,data);
     });
 });
 

@@ -57,7 +57,7 @@ function Soma(){
         min: 20
     }));
     
-    setBackground('black');
+    setBackground('sea');
     setEntityColors([colors.red,colors.orange,colors.ltOrange]);
     setEntitySprite('/assets/sprites/bubbleLt.png',1);
     setEntitySpriteScale(1.9);

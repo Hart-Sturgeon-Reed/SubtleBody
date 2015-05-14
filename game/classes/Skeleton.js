@@ -13,6 +13,10 @@ function Skeleton(userId,data){
     this.handDistance = {l:0,r:0,t:0};
     this.maxDistance = {l:0,r:0,t:0};
     this.normDistance = {l:0,r:0,t:0};
+    this.handDepth = {l:0,r:0,t:0};
+    this.maxDepth = {l:0,r:0,t:0};
+    this.normDepth = {l:0,r:0,t:0};
+    this.headAngle;
     
     //Events
     this.pause = function(){};
@@ -82,6 +86,22 @@ function Skeleton(userId,data){
         this.handAngles.l = self.torso.pos.angle2(self.lHand.pos,self.head.pos);
         this.handAngles.r = self.torso.pos.angle2(self.rHand.pos,self.head.pos);
         this.handAngles.t = self.torso.pos.angle2(self.lHand.pos,self.rHand.pos);
+        this.headAngle = self.torso.pos.angle2(self.head.pos,east);
+        this.handOffset.l = self.lHand.pos.clone().vsub(self.torso.pos);
+        this.handOffset.r = self.rHand.pos.clone().vsub(self.torso.pos);
+        this.handOffset.t = self.handOffset.l.clone().vadd(self.handOffset.r);
+        
+        this.handDepth.l = self.torso.z-self.lHand.z;
+        if(this.handDepth.l>this.maxDepth.l) this.maxDepth.l = this.handDepth.l;
+        this.handDepth.r = self.torso.z-self.rHand.z;
+        if(this.handDepth.r>this.maxDepth.r) this.maxDepth.r = this.handDepth.r;
+        this.handDepth.t = self.torso.z-avg(self.lHand.z,self.rHand.z);
+        if(this.handDepth.t>this.maxDepth.t) this.maxDepth.t = this.handDepth.t;
+        this.normDepth = {
+            l:this.handDepth.l/this.maxDepth.l,
+            r:this.handDepth.r/this.maxDepth.r,
+            t:this.handDepth.t/this.maxDepth.t,
+        }
         
     };
     this.sendState = function(){
@@ -113,13 +133,13 @@ function TrackingPoint(smoothing){
         this.py = data.py;
         var pxMap = (data.px/640) * stageWidth;
         var pyMap = (data.py/480) * stageHeight;
-        var sPos = smooth(pxMap,pyMap,this.x,this.y,smoothing);//{x:pxMap,y:pyMap};
+        var sPos = smooth(pxMap,pyMap,self.x,self.y,smoothing);//{x:pxMap,y:pyMap};
         this.x += sPos.x;
         this.y += sPos.y;
         this.checkBounds();
         this.pos = Physics.vector(self.x,self.y);
         
-        self.old = self.old.slice(0,10); //Could probably be uncommented, issue was with self.old.shift->unshift
+        self.old = self.old.slice(0,10);
     }
     this.getDelta = function(framesAgo){
         if(framesAgo==null){framesAgo=0};

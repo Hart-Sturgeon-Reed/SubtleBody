@@ -80,6 +80,18 @@ function TestStage(){
 //    stage.filters = [invertFilter];
     
     center = Physics.vector(stageWidth/2,stageHeight/2);
+    northwest = Physics.vector(0,0);
+    north = Physics.vector(stageWidth/2,0);
+    northeast = Physics.vector(stageWidth,0);
+    east = Physics.vector(stageWidth,stageHeight/2);
+    southeast = Physics.vector(0,stageHeight);
+    south = Physics.vector(stageWidth/2,stageHeight);
+    southwest = Physics.vector(stageWidth,stageHeight);
+    west = Physics.vector(0,stageHeight/2);
+    
+    
+    
+    diagonal = Math.sqrt(stageWidth*stageWidth+stageHeight*stageHeight);
     
     console.log("Stage is "+stageWidth+"px wide & "+stageHeight+"px high");
     

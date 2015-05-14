@@ -51,7 +51,7 @@ function initOptions(){
     entities = [];
     
     paused = false;
-    sendData = false; // Send incoming skeleton data to another computer over OSC`
+    sendData = true; // Send incoming skeleton data to another computer over OSC`
     useWind = false; // Applies controller delta (scaled) as a force to all entities
     drawRadial = false; // Adds radial symmetry to particle systems
     drawMode = false; // Draws pixi sprites
@@ -94,6 +94,8 @@ function initOptions(){
     gravityStrength = GRV.zero;
 
     prevLML = prevLMR = null;
+    
+    nv = {x:0,y:0}; //null vector
 
     //Load textures into cache for later use
     sprites = {

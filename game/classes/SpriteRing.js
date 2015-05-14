@@ -16,7 +16,7 @@ function SpriteRing(container,sym,sprite,offset,origin,angle,scale,alpha,tint) {
     
     this.initMoons = function(){
         this.moons = [];
-        var points = getRadialSym(sym, {x:0,y:-offset}, {x:0,y:0}, angle);
+        var points = getRadialSym(sym, offset, {x:0,y:0}, angle);
         for (var p of points){
             var og = new PIXI.Sprite(this.moonSprite);
             og.width = scale;
@@ -55,7 +55,7 @@ function SpriteRing(container,sym,sprite,offset,origin,angle,scale,alpha,tint) {
                 self.sprite.removeChild(old);
             }
             self.moons = [];
-            var points = getRadialSym(self.sym, {x:0,y:-offset}, origin, angle);
+            var points = getRadialSym(self.sym, offset, origin, angle);
             for (var p of points){
                 var og = new PIXI.Sprite(self.moonSprite);
                 og.width = scale;
@@ -73,7 +73,7 @@ function SpriteRing(container,sym,sprite,offset,origin,angle,scale,alpha,tint) {
                 self.sprite.addChild(og);
             }
         }else{
-            var points = getRadialSym(newSym, {x:0,y:-offset}, {x:0,y:0}, angle);
+            var points = getRadialSym(newSym, offset, {x:0,y:0}, angle);
             var i =0;
             for (var p of points){
                 var moon = this.moons[i];
@@ -81,7 +81,7 @@ function SpriteRing(container,sym,sprite,offset,origin,angle,scale,alpha,tint) {
                 moon.position.x = p.x;
                 moon.position.y = p.y;
                 moon.tint = self.tint;
-                if(scale!=null) moon.scale = scale;
+                if(scale!=null) {moon.width = scale; moon.height = scale;}
             }
         }
     }

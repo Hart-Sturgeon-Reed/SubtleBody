@@ -237,7 +237,7 @@ function LeapMotion(data){
 function smooth(nx,ny,cx,cy,amount){
     var nPos = new Physics.vector(nx,ny);
     var cPos = new Physics.vector(cx,cy);
-    var max = 20
+    var max = 16;
     var min = 2;
     
     var sPos = nPos.vsub(cPos).mult(amount).clone();

@@ -7,16 +7,17 @@ angular.module('ControlApp', [])
         {text:'Pause', down:false, label:'P'}
     ];
     $scope.leftControls = [
-        //{text:'Dodge', down:true, label:'SS'},
+        {text:'Reset Levels', down:false, label:'L'},
     ];
     $scope.rightControls = [
-        //{text:'Swim Faster', down:true, label:'SP'},
+        {text:'Invert Controls', down:false, label:'I'},
     ];
 }]);
 
 function init(){
     new TimelineLite().to($('.scroller'),1.0,{'scrollTop':270,delay:1});
     socket = io();
+    inverted = false;
     socket.on('start up',function(id) {
         console.log('We are Control Panel #'+id);
         socket.emit('init controller');
@@ -46,13 +47,16 @@ function init(){
     $('#P').click(function(e){
         socket.emit('pause');
     });
+    $('#I').click(function(e){
+        inverted = !inverted;
+    });
     
     lockedAllowed = window.screen.orientation.lock('landscape-primary');
     if (window.DeviceMotionEvent == undefined) {
         //No accelerometer is present. Use buttons. 
-        console.log("no accelerometer");
+        //console.log("no accelerometer");
     } else {
-        console.log("accelerometer found");
+        //console.log("accelerometer found");
         window.addEventListener("devicemotion", accelerometerUpdate, true);
         
         window.ondevicemotion = function(event) {  
@@ -77,7 +81,8 @@ function accelerometerUpdate(event) {
         xTilt: xPosition,
         yTilt: yPosition
     }
-    console.log(aX+', '+aY+', '+aZ);
-    console.log(xPosition+', '+yPosition);
+    if(inverted) accel.yTilt *= -1;
+    //console.log(aX+', '+aY+', '+aZ);
+    //console.log(xPosition+', '+yPosition);
     socket.emit('accel', accel);
 }

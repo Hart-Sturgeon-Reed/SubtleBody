@@ -256,11 +256,11 @@ function Cell(userId,xPos,yPos,tint,scale){
     }
     this.level = 3;
     this.maxLevel = 9;
-    this.xpReq = 12;
-    this.xpInc = 2;
-    var symbioteOffset = 16;
+    this.xpReq = 16;
+    this.xpInc = 1;
+    var symbioteOffset = {x:0,y:-12};
     
-    this.symbiotes = new SpriteRing(this.sprite,this.level,cellSprite,symbioteOffset,{x:0,y:0},0,20,0.6,tint);
+    this.symbiotes = new SpriteRing(this.sprite,this.level,sprites.wpLt,symbioteOffset,nv,0,20,0.8,tint);
     
     this.updateSymbiotes = function(){
         this.symbiotes.update(self.level,symbioteOffset);

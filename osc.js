@@ -9,6 +9,7 @@ function setupOSC() {
             if (!lightBodyCreated){
                 var skeleton = newSkeleton(userId,msg.args);
                 createLightBody(skeleton);
+                socket.emit('send osc','/kinect added');
             }else if (!lightBodyVisible){
 //                lightBody.skeleton = skeleton;
                 showLightBody();
@@ -16,13 +17,13 @@ function setupOSC() {
         }else if(address=="/User Lost"){
             if (lightBodyCreated && lightBodyVisible){
                 hideLightBody();
+                socket.emit('send osc','/kinect lost');
             }
         }else if(address=="/User Data"){
             if (lightBodyCreated){
                 stage.mandala.visible = true;
                 lightBody.update(msg.args);
             }
-            
         }else if (address=="/flow"){
             var delta = {x:msg.args[0].value,y:msg.args[1].value};
             //console.log(delta);
